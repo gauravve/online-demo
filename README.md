@@ -1,39 +1,32 @@
 # Introduction #
 
-This Vagrant project sets up a demo of Deployit using the PetPortal application using Apache2, JBoss 5 and MySql and the maven plugin.
+This project sets up the Deployit online demo. It is meant to be run from a newly provisioned Amazon EC2 image.
+
+# Overall setup #
+
+* 
+
+# Preparation of the AMI #
+
+* yum update
+* yum install git puppet
+* cd /etc/puppet
+* git clone git://github.com/xebialabs/online-demo.git
+* install dependencies (see below)
+* puppet apply --modulepath /etc/puppet/online-demo/modules /etc/puppet/online-demo/manifests/init.pp
 
 # Getting dependencies #
 
-You'll need the following dependencies available to run the demo:
+You'll need the following dependencies available in /download-cache to run the demo:
 
+* deployit-server.zip
+* deployit-cli.zip
+* jbossas-plugin.jar
 * deployment-test2-plugin-1.0-milestone-7.jar
-* jboss-5.1.0.GA.zip
+* jboss-5.1.0.GA.zip (from http://downloads.sourceforge.net/project/jboss/JBoss/JBoss-5.1.0.GA/jboss-5.1.0.GA.zip)
 
-Puppet will download the Deployit server and CLI, JBoss and WLS plugins from Nexus.
+# Accessing the demo #
 
-# Starting the demo #
+To access the Deployit server, visit http://<EC2 public DNS name>:4516/
 
-To start all 4 images:
-
-    sudo vagrant up
-
-To start each of the images separately:
-
-    sudo vagrant up deployit
-    sudo vagrant up web    
-    sudo vagrant up app    
-    sudo vagrant up db    
-
-## Access the instance ##
-
-Visit URL http://localhost:4516 .
-
-# Demo scenario #
-
-* import the PetPortal application, version 1 and 2
-* deploy PetPortal/1.0 to DEV, skip all steps (DEV environment doesn't work)
-* deploy PetPortal/1.0 to TEST
-* execute the deployment
-* PetPortal URL: http://192.168.1.11/
-* upgrade PetPortal/2.0 on TEST -- this website content contains an intentional typo
-* use the maven plugin project (mvn deployit:deploy) to create a new DAR, execut the deployment & fix the typo
+Username/password: admin/admin
