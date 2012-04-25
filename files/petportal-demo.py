@@ -33,7 +33,7 @@ def createLocalHost(id):
 	return create(resolveInfraId(id),'overthere.LocalHost',{'os':'UNIX','temporaryDirectoryPath':'/tmp'})
 
 def createVagrantSshHost(id, ipAddress):
-	return create(resolveInfraId(id),'overthere.SshHost',{'address':ipAddress,'os':'UNIX','connectionType':'SUDO_INTERACTIVE','username':'deployment','password':'deployment','port':'22', 'sudoUsername':'root', 'temporaryDirectoryPath':'/tmp'})
+	return create(resolveInfraId(id),'overthere.SshHost',{'address':ipAddress,'os':'UNIX','connectionType':'INTERACTIVE_SUDO','username':'deployment','password':'deployment','port':'22', 'sudoUsername':'root', 'temporaryDirectoryPath':'/tmp'})
 
 def createLocalHostAndDummyApacheServer(hostId,serverNames, infraList, createHost=True):
 	hostId = (resolveInfraId(hostId))
