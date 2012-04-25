@@ -14,7 +14,7 @@ Exec["yum-update"] -> Package <| |>
   package { "mysql-server": ensure => installed }
   package { "mysql-client": ensure => installed }
 
-  service { "mysql":
+  service { "mysqld":
     enable => true,
     ensure => running,
     require => Package["mysql-server"],
