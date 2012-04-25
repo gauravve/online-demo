@@ -3,13 +3,13 @@
 $mysql_password = 'centos'
 
 #
-# Apt-get update
+# Yum update
 #
-exec { "apt-update":
-    command     => "/usr/bin/apt-get update",
+exec { "yum-update":
+    command     => "/usr/bin/yum update",
 }
 
-Exec["apt-update"] -> Package <| |>
+Exec["yum-update"] -> Package <| |>
 
   package { "mysql-server": ensure => installed }
   package { "mysql-client": ensure => installed }
