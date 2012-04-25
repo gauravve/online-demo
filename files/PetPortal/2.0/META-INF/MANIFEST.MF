@@ -1,0 +1,58 @@
+Manifest-Version: 1.0
+Deployit-Package-Format-Version: 1.3
+CI-Application: PetPortal
+CI-Version: 2.0
+
+Name: PetClinic-2.0.ear
+CI-Name: PetClinic-ear
+CI-Type: jee.Ear
+
+Name: PetClinic-ds-on-jboss
+CI-Type: jbossas.NonTransactionalDatasourceSpec
+CI-jndiName: jdbc/pets
+CI-connectionURL: {{DB_URL}}
+CI-driverClass: oracle.jdbc.OracleDriver
+CI-username: {{DB_USERNAME}}
+CI-password: {{DB_PASSWORD}}
+
+Name: PetClinic-ds-on-wls
+CI-Type: wls.DataSourceSpec
+CI-jndiNames: jdbc/pets
+CI-url: {{DB_URL}}
+CI-driverName: oracle.jdbc.OracleDriver
+CI-username: {{DB_USERNAME}}
+CI-password: {{DB_PASSWORD}}
+
+Name: PetPortal_pages
+CI-Type: www.WebContent
+CI-Name: webContent
+CI-Folder: PetPortal
+
+Name: PetPortal-host
+CI-Type: www.ApacheVirtualHostSpec
+CI-host: {{APACHE_HOST}}
+CI-port: {{APACHE_PORT}}
+CI-documentRoot: /var/www
+CI-targetFile: PetPortal.conf
+
+Name: PetPortal-test
+CI-Type: tests2.HttpRequestTest
+CI-url: http://{{APACHE_HOST}}:{{APACHE_PORT}}/
+CI-expectedResponseText: {{PETPORTAL_TITLE}}
+
+Name: PetPortal-to-PetClinic-on-jboss
+CI-Type: www.ApacheProxyPassSpec
+CI-from: /{{PETCLINIC_CONTEXT_ROOT}}
+CI-to: http://{{APPSERVER_HOST}}:{{APPSERVER_PORT}}/{{PETCLINIC_CONTEXT_ROOT}}
+CI-reverse: true
+CI-targetFile: PetClinic_jboss.conf
+
+Name: PetPortal-to-PetClinic-test
+CI-Type: tests2.HttpRequestTest
+CI-url: http://{{APACHE_HOST}}:{{APACHE_PORT}}/{{PETCLINIC_CONTEXT_ROOT}}/
+CI-expectedResponseText: Display all veterinarians
+
+Name: sql
+CI-Type: sql.SqlScripts
+
+

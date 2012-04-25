@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<synthetic xmlns="http://www.xebialabs.com/deployit/synthetic">
+
+<!--
+<type-modification type="www.PublishedWebContent">
+	<property name="targetDirectory" description="Target directory name (unhidden)" hidden="false" default="&lt;#assign target=(deployed.virtualHost.documentRoot)!''/&gt;&lt;#if target != ''&gt;${target}&lt;#else&gt;${deployed.container.defaultDocumentRoot}&lt;/#if&gt;"/>
+</type-modification>
+-->
+
+<!-- Extension for JBoss + Apache + Oracle demo -->
+	<type type="www.ApacheProxyPassSetting" extends="www.ApacheConfFragment" deployable-type="www.ApacheProxyPassSpec">
+		<generate-deployable type="www.ApacheProxyPassSpec" extends="generic.Resource" />
+  
+		<property name="from" />
+		<property name="to" />
+		<property name="options" required="false" default="" />
+		<property name="reverse" kind="boolean" required="false" default="false" />
+	</type>
+	
+	<type-modification type="jbossas.ServerV5">
+		<property name="startWaitTime" kind="integer" default="5" hidden="true"/>
+		<property name="stopWaitTime" kind="integer" default="5" hidden="true"/>
+	</type-modification>
+	
+	<type-modification type="udm.Environment">
+	  <property name="requiresReleaseNotes" description="Release notes are required"
+	            kind="boolean" required="false" category="Deployment Checklist" />
+	  <property name="requiresPerformanceTested" description="Performance testing is required"
+	            kind="boolean" required="false" category="Deployment Checklist" />
+	  <property name="requiresChangeTicketNumber" description="Change ticket number authorizing deployment is required"
+	            kind="boolean" required="false" category="Deployment Checklist" />
+	</type-modification>
+	
+	<type-modification type="udm.Version">
+	  <property name="satisfiesReleaseNotes" description="Indicates the package contains release notes" 
+	            kind="boolean" required="false" category="Deployment Checklist"/>
+	  <property name="satisfiesPerformanceTested" description="Indicates the package has been performance tested" 
+	            kind="boolean" required="false" category="Deployment Checklist"/>
+	  <property name="satisfiesChangeTicketNumber" description="Indicates the change ticket number authorizing deployment to production" 
+	            kind="string" required="false" category="Deployment Checklist"/>
+	</type-modification>
+
+</synthetic>
