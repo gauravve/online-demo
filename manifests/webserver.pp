@@ -1,18 +1,22 @@
 # Puppet demo manifest
 
-#
-# Yum update
-#
-exec { "yum-update":
+class httpd {
+  
+  #
+  # Yum update
+  #
+  exec { "yum-update":
     command     => "/usr/bin/yum update",
-}
+  }
 
-Exec["yum-update"] -> Package <| |>
+  Exec["yum-update"] -> Package <| |>
 
-package { 'httpd':
-  ensure => present,
-}
+  package { 'httpd':
+    ensure => present,
+  }
 
-service { 'httpd':
-  ensure => running,
+  service { 'httpd':
+    ensure => running,
+  }
 }
+include httpd

@@ -2,17 +2,18 @@
 
 $mysql_password = 'centos'
 
-#
-# Yum update
-#
-exec { "yum-update":
+class mysql {
+  
+  #
+  # Yum update
+  #
+  exec { "yum-update":
     command     => "/usr/bin/yum update",
-}
+  }
 
-Exec["yum-update"] -> Package <| |>
+  Exec["yum-update"] -> Package <| |>
 
   package { "mysql-server": ensure => installed }
-  package { "mysql-client": ensure => installed }
 
   service { "mysqld":
     enable => true,
@@ -32,3 +33,6 @@ Exec["yum-update"] -> Package <| |>
       command => "/usr/bin/mysql -uroot -p$mysql_password -e \"create database petportal; grant all on petportal.* to petportal@localhost identified by 'petportal';\"",
       require => Exec["set-mysql-password"],
  }
+
+}
+include mysql
