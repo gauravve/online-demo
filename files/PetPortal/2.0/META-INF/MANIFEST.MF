@@ -30,7 +30,7 @@ CI-Folder: PetPortal
 
 Name: PetPortal-host
 CI-Type: www.ApacheVirtualHostSpec
-CI-host: {{APACHE_HOST}}
+CI-host: *
 CI-port: {{APACHE_PORT}}
 CI-documentRoot: /var/www
 CI-targetFile: PetPortal.conf

@@ -33,7 +33,7 @@ def createLocalHost(id):
 	return create(resolveInfraId(id),'overthere.LocalHost',{'os':'UNIX','temporaryDirectoryPath':'/tmp'})
 
 def createVagrantSshHost(id, ipAddress):
-	return create(resolveInfraId(id),'overthere.SshHost',{'address':ipAddress,'os':'UNIX','connectionType':'SUDO','username':'deployment','password':'deployment','port':'22', 'sudoUsername':'root', 'temporaryDirectoryPath':'/tmp'})
+	return create(resolveInfraId(id),'overthere.SshHost',{'address':ipAddress,'os':'UNIX','connectionType':'SUDO_INTERACTIVE','username':'deployment','password':'deployment','port':'22', 'sudoUsername':'root', 'temporaryDirectoryPath':'/tmp'})
 
 def createLocalHostAndDummyApacheServer(hostId,serverNames, infraList, createHost=True):
 	hostId = (resolveInfraId(hostId))
@@ -149,8 +149,8 @@ environmentsList.append(create('Environments/Ops/Prod/PROD','udm.Environment',{'
 
 
 environmentsList.append(create('Environments/Dictionaries/PetPortal-Dict','udm.Dictionary',
-  {'entries':{'APACHE_PORT':'8000','APACHE_HOST':'192.168.1.11','APPSERVER_HOST':'192.168.1.12','APPSERVER_PORT':'8080',
-  'DB_URL':'jdbc:oracle:thin:@192.168.1.13:orcl', 'PETPORTAL_TITLE':'Dierenportaal','DB_USERNAME':'petportal','DB_PASSWORD':'petportal','PETCLINIC_CONTEXT_ROOT':'petclinic'}}))
+  {'entries':{'APACHE_PORT':'8000','APACHE_HOST':'localhost','APPSERVER_HOST':'localhost','APPSERVER_PORT':'8080',
+  'DB_URL':'jdbc:oracle:thin:@localhost:orcl', 'PETPORTAL_TITLE':'Dierenportaal','DB_USERNAME':'petportal','DB_PASSWORD':'petportal','PETCLINIC_CONTEXT_ROOT':'petclinic'}}))
 environmentsList.append(create('Environments/Dictionaries/PetPortal-Dict-DEV','udm.Dictionary',
   {'entries':{'APACHE_PORT':'80','APACHE_HOST':'localhost','APPSERVER_HOST':'localhost','APPSERVER_PORT':'80',
   'DB_URL':'jdbc:oracle:thin:@localhost:orcl', 'PETPORTAL_TITLE':'Dierenportaal','DB_USERNAME':'petportal','DB_PASSWORD':'petportal','PETCLINIC_CONTEXT_ROOT':'petclini'}}))

@@ -10,6 +10,9 @@ This project sets up the Deployit online demo. It is meant to be run from a newl
 
 * yum update
 * yum install git puppet
+* change /etc/ssh/sshd_config:
+** PasswordAuthentication yes
+** PermitEmptyPasswords no
 * cd /etc/puppet
 * git clone git://github.com/xebialabs/online-demo.git
 * install dependencies (see below)
