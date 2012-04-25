@@ -16,7 +16,10 @@ This project sets up the Deployit online demo. It is meant to be run from a newl
 * cd /etc/puppet
 * git clone git://github.com/xebialabs/online-demo.git
 * install dependencies (see below)
-* puppet apply --modulepath /etc/puppet/online-demo/modules /etc/puppet/online-demo/manifests/init.pp
+* puppet apply --modulepath /etc/puppet/online-demo/modules /etc/puppet/online-demo/manifests/database.pp
+* puppet apply --modulepath /etc/puppet/online-demo/modules /etc/puppet/online-demo/manifests/webserver.pp
+* puppet apply --modulepath /etc/puppet/online-demo/modules /etc/puppet/online-demo/manifests/appserver.pp
+* puppet apply --modulepath /etc/puppet/online-demo/modules /etc/puppet/online-demo/manifests/deployit.pp
 
 # Getting dependencies #
 

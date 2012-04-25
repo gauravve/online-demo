@@ -107,7 +107,7 @@ infrastructureList.append(create('Infrastructure/Dev/DEV-Localhost/DEV-TestRunne
 # Real Vagrant Test Environment Infrastructure
 webServerHost = createVagrantSshHost('Infrastructure/Dev/TEST-Webserver','localhost')
 infrastructureList.append(webServerHost)
-infrastructureList.append(create('Infrastructure/Dev/TEST-Webserver/TEST-Apache','www.ApacheHttpdServer', {'host': webServerHost.id,'stopCommand':'/usr/sbin/apachectl stop','startWaitTime':'5','startCommand':'/usr/sbin/apachectl start','stopWaitTime':'0','defaultDocumentRoot':'/var/www','configurationFragmentDirectory':'/etc/httpd/conf.d','restartCommand':'/usr/sbin/apachectl restart'}))
+infrastructureList.append(create('Infrastructure/Dev/TEST-Webserver/TEST-Apache','www.ApacheHttpdServer', {'host': webServerHost.id,'stopCommand':'/usr/sbin/apachectl stop','startWaitTime':'5','startCommand':'/usr/sbin/apachectl start','stopWaitTime':'0','defaultDocumentRoot':'/var/www','configurationFragmentDirectory':'/etc/httpd/conf.d','restartCommand':'/usr/sbin/apachectl restart', 'restartWaitTime':'0'}))
 infrastructureList.append(create('Infrastructure/Dev/TEST-Webserver/TEST-TestRunner','tests2.TestRunner',{'host':webServerHost.id,'name':'TEST-TestRunner'}))
 
 appServerHost = createVagrantSshHost('Infrastructure/Dev/TEST-Appserver','localhost')
