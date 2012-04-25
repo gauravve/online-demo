@@ -33,7 +33,7 @@ def createLocalHost(id):
 	return create(resolveInfraId(id),'overthere.LocalHost',{'os':'UNIX','temporaryDirectoryPath':'/tmp'})
 
 def createVagrantSshHost(id, ipAddress):
-	return create(resolveInfraId(id),'overthere.SshHost',{'address':ipAddress,'os':'UNIX','connectionType':'SUDO','username':'vagrant','password':'vagrant','port':'22', 'sudoUsername':'root', 'temporaryDirectoryPath':'/tmp'})
+	return create(resolveInfraId(id),'overthere.SshHost',{'address':ipAddress,'os':'UNIX','connectionType':'SUDO','username':'deployment','password':'deployment','port':'22', 'sudoUsername':'root', 'temporaryDirectoryPath':'/tmp'})
 
 def createLocalHostAndDummyApacheServer(hostId,serverNames, infraList, createHost=True):
 	hostId = (resolveInfraId(hostId))
@@ -105,16 +105,16 @@ createLocalHostAndDummyOracleClient('Dev/DEV-Localhost',['DEV-MySql'], infrastru
 infrastructureList.append(create('Infrastructure/Dev/DEV-Localhost/DEV-TestRunner','tests2.TestRunner',{'host':'Infrastructure/Dev/DEV-Localhost','name':'TEST-TestRunner'}))
 
 # Real Vagrant Test Environment Infrastructure
-webServerHost = createVagrantSshHost('Infrastructure/Dev/TEST-Webserver','192.168.1.11')
+webServerHost = createVagrantSshHost('Infrastructure/Dev/TEST-Webserver','localhost')
 infrastructureList.append(webServerHost)
-infrastructureList.append(create('Infrastructure/Dev/TEST-Webserver/TEST-Apache','www.ApacheHttpdServer', {'host': webServerHost.id,'stopCommand':'/usr/sbin/apache2ctl stop','startWaitTime':'5','startCommand':'/usr/sbin/apache2ctl start','stopWaitTime':'0','defaultDocumentRoot':'/var/www','configurationFragmentDirectory':'/etc/apache2/conf.d'}))
+infrastructureList.append(create('Infrastructure/Dev/TEST-Webserver/TEST-Apache','www.ApacheHttpdServer', {'host': webServerHost.id,'stopCommand':'/usr/sbin/apachectl stop','startWaitTime':'5','startCommand':'/usr/sbin/apachectl start','stopWaitTime':'0','defaultDocumentRoot':'/var/www','configurationFragmentDirectory':'/etc/httpd/conf.d'}))
 infrastructureList.append(create('Infrastructure/Dev/TEST-Webserver/TEST-TestRunner','tests2.TestRunner',{'host':webServerHost.id,'name':'TEST-TestRunner'}))
 
-appServerHost = createVagrantSshHost('Infrastructure/Dev/TEST-Appserver','192.168.1.12')
+appServerHost = createVagrantSshHost('Infrastructure/Dev/TEST-Appserver','localhost')
 infrastructureList.append(appServerHost)
 infrastructureList.append(create('Infrastructure/Dev/TEST-Appserver/TEST-AppServer','jbossas.ServerV5',{'home':'/opt/jboss-5.1.0.GA','host':appServerHost.id,'controlPort':'1099','httpPort':'8080','ajpPort':'8009','serverName':'default'}))
 
-dbServerHost = createVagrantSshHost('Infrastructure/Dev/TEST-Database','192.168.1.13')
+dbServerHost = createVagrantSshHost('Infrastructure/Dev/TEST-Database','localhost')
 infrastructureList.append(dbServerHost)
 infrastructureList.append(create('Infrastructure/Dev/TEST-Database/TEST-MySql','sql.MySqlClient',{'host':dbServerHost.id,'password':'{b64}vNteSNQBPd8QU4OwGM6Yfw==','databaseName':'petportal','username':'petportal','mySqlHome':'/usr'}))
 
