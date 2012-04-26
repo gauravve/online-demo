@@ -141,8 +141,26 @@ class deployit-data {
   }  
 }
 
+class online-demo-docs {
+  # Install online demo docs
+
+  file { 'create-target-dir':
+    path => "/var/www",
+    ensure => directory,
+  }
+
+  file { 'install-online-demo-docs':
+    path => "/var/www/online-demo",
+    source   => "/demo-files/docs",
+    ensure => present,
+    recurse => true,
+    require => File['create-target-dir'],
+  }
+}
+
 include deployit-install
 include deployit-start
 include deployit-data
+include online-demo-docs
 
-Class["deployit-install"] -> Class["deployit-start"] -> Class["deployit-data"]
+Class["online-demo-docs"] -> Class["deployit-install"] -> Class["deployit-start"] -> Class["deployit-data"]
