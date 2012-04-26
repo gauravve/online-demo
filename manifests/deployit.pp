@@ -64,11 +64,11 @@ class deployit-install {
     require => [ Exec["download-jbossas-plugin"], Deployit::Server["install-server"] ],
   }
 
-  # Install jbossas-plugin
+  # Install wls-plugin
 
   exec { 'download-wls-plugin':
     unless => "test ! -e /usr/bin/s3get || test -e ${WLS_PLUGIN_ARCHIVE}",
-    command => "s3get deployit-online-demo/jbossas-plugin-${WLS_PLUGIN_VERSION}.jar ${WLS_PLUGIN_ARCHIVE}",
+    command => "s3get deployit-online-demo/wls-plugin-${WLS_PLUGIN_VERSION}.jar ${WLS_PLUGIN_ARCHIVE}",
   }
 
   file { 'install-wls-plugin':
