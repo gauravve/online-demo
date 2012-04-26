@@ -51,6 +51,11 @@ They are stored in an S3 bucket *deployit-online-demo*.
 
 The AMI already contains all required middleware to be able to run the demo. When it starts, the httpd server, jboss and mysql are all started through init scripts.
 
+Quirks:
+
+* the downloaded files end up in directory /download-cache to keeps things in sync with our current vagrant setup.
+* the directory /demo-files on the AMI is also used, it is a symlink to the files directory in this project.
+
 # Accessing the demo #
 
 To access the Deployit server, visit http://PUBLIC_DNS_NAME:4516/
