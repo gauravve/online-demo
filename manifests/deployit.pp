@@ -145,12 +145,12 @@ class online-demo-docs {
   # Install online demo docs
 
   file { 'create-target-dir':
-    path => "/var/www",
+    path => "/var/www/html",
     ensure => directory,
   }
 
   file { 'install-online-demo-docs':
-    path => "/var/www/online-demo",
+    path => "/var/www/html/online-demo",
     source   => "/demo-files/docs",
     ensure => present,
     recurse => true,
