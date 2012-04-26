@@ -5,45 +5,91 @@
 $DEPLOYIT_VERSION = '3.7.1'
 $JBOSSAS_PLUGIN_VERSION = '3.7.0'
 $WLS_PLUGIN_VERSION = '3.7.0'
+$TESTER_PLUGIN_VERSION = '1.0-milestone-7'
+
+$DEPLOYIT_SERVER_ARCHIVE = "/download-cache/deployit-${DEPLOYIT_VERSION}-server.zip"
+$DEPLOYIT_CLI_ARCHIVE = "/download-cache/deployit-${DEPLOYIT_VERSION}-cli.zip"
+$JBOSSAS_PLUGIN_ARCHIVE = "/download-cache/jbossas-plugin-${JBOSSAS_PLUGIN_VERSION}.jar"
+$WLS_PLUGIN_ARCHIVE = "/download-cache/wls-plugin-${WLS_PLUGIN_VERSION}.jar"
+$TESTER_PLUGIN_ARCHIVE = "/download-cache/deployment-test2-plugin-${TESTER_PLUGIN_VERSION}.jar"
+
+# The following allows this Puppet file to be run on vagrant for local testing & EC2 in production
+$CLI_HOME = $operatingsystem ? {
+    'Ubuntu' => '/home/vagrant',
+    default => '/home/ec2-user',
+}
+
+Exec { path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ] }
 
 class { 'deployit':
-  cliHome => '/home/ec2-user/deployit-cli',
+  cliHome => "${CLI_HOME}/deployit-cli",
 }
 
 class deployit-install {
 
+  exec { 'download-deployit-server':
+    unless => "test ! -e /usr/bin/s3get || test -e ${DEPLOYIT_SERVER_ARCHIVE}",
+    command => "s3get deployit-online-demo/deployit-${DEPLOYIT_VERSION}-server.zip ${DEPLOYIT_SERVER_ARCHIVE}",
+  }
+
   deployit::server { 'install-server':
-    serverArchive => "/download-cache/deployit-${DEPLOYIT_VERSION}-server.zip",
+    serverArchive => "${DEPLOYIT_SERVER_ARCHIVE}",
     ensure => present,
+    require => Exec["download-deployit-server"],
+  }
+
+  exec { 'download-deployit-cli':
+    unless => "test ! -e /usr/bin/s3get || test -e ${DEPLOYIT_CLI_ARCHIVE}",
+    command => "s3get deployit-online-demo/deployit-${DEPLOYIT_VERSION}-cli.zip ${DEPLOYIT_CLI_ARCHIVE}",
   }
 
   deployit::cli { 'install-cli':
-    destinationDir => '/home/ec2-user',
-    cliArchive => "/download-cache/deployit-${DEPLOYIT_VERSION}-cli.zip",
+    destinationDir => "${CLI_HOME}",
+    cliArchive => "${DEPLOYIT_CLI_ARCHIVE}",
     ensure => present,
+    require => Exec["download-deployit-cli"],
   }
 
   # Install jbossas-plugin
 
+  exec { 'download-jbossas-plugin':
+    unless => "test ! -e /usr/bin/s3get || test -e ${JBOSSAS_PLUGIN_ARCHIVE}",
+    command => "s3get deployit-online-demo/jbossas-plugin-${JBOSSAS_PLUGIN_VERSION}.jar ${JBOSSAS_PLUGIN_ARCHIVE}",
+  }
+
   file { 'install-jbossas-plugin':
     path => "/opt/deployit-server/plugins/jbossas-plugin-${JBOSSAS_PLUGIN_VERSION}.jar",
-    source   => "/download-cache/jbossas-plugin-${JBOSSAS_PLUGIN_VERSION}.jar",
+    source   => "${JBOSSAS_PLUGIN_ARCHIVE}",
     ensure => "present",
-    require => Deployit::Server["install-server"],
+    require => [ Exec["download-jbossas-plugin"], Deployit::Server["install-server"] ],
+  }
+
+  # Install jbossas-plugin
+
+  exec { 'download-wls-plugin':
+    unless => "test ! -e /usr/bin/s3get || test -e ${WLS_PLUGIN_ARCHIVE}",
+    command => "s3get deployit-online-demo/jbossas-plugin-${WLS_PLUGIN_VERSION}.jar ${WLS_PLUGIN_ARCHIVE}",
   }
 
   file { 'install-wls-plugin':
     path => "/opt/deployit-server/plugins/wls-plugin-${WLS_PLUGIN_VERSION}.jar",
-    source   => "/download-cache/wls-plugin-${WLS_PLUGIN_VERSION}.jar",
+    source   => "${WLS_PLUGIN_ARCHIVE}",
     ensure => "present",
-    require => Deployit::Server["install-server"],
+    require => [ Exec["download-wls-plugin"], Deployit::Server["install-server"] ],
+  }
+
+  # Install http-tester
+
+  exec { 'download-tester-plugin':
+    unless => "test ! -e /usr/bin/s3get || test -e ${TESTER_PLUGIN_ARCHIVE}",
+    command => "s3get deployit-online-demo/deployment-test2-plugin-${TESTER_PLUGIN_VERSION}.jar ${TESTER_PLUGIN_ARCHIVE}",
   }
 
   file { 'install-http-tester':
-    path => "/opt/deployit-server/plugins/deployment-test2-plugin-1.0-milestone-7.jar",
-    source   => "/download-cache/deployment-test2-plugin-1.0-milestone-7.jar",
+    path => "/opt/deployit-server/plugins/deployment-test2-plugin-${TESTER_PLUGIN_VERSION}.jar",
+    source   => "${TESTER_PLUGIN_ARCHIVE}",
     ensure => "present",
-    require => Deployit::Server["install-server"],
+    require => [ Exec["download-tester-plugin"], Deployit::Server["install-server"] ],
   }
 
   file { 'install-petportal':
