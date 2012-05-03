@@ -15,7 +15,7 @@ Vagrant::Config.run do |config|
     deployit_config.vm.provision :puppet do |puppet|
       puppet.manifest_file = "deployit.pp"
       puppet.manifests_path = "manifests"
-      puppet.module_path = "../vagrant/shared/puppet"
+      puppet.module_path = [ "../vagrant/shared/puppet" ]
     end
   end
 end

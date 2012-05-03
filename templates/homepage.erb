@@ -1,0 +1,27 @@
+![Deployit Login](images/deployit-logo.png "Deployit Login")
+
+## Welcome to the Deployit online demo!
+
+This is the homepage of the Deployit online demo.
+
+These are your options:
+
+<% if has_variable?("ec2_public_hostname") then %>
+* Log into the [Deployit GUI](http://<%=ec2_public_hostname%>:4516/)
+* Open the [Deployit online demo scenario](/onlinedemo/)
+* If you've already followed the demo scenario, you can [take a look at the deployed the PetPortal application](http://<%=ec2_public_hostname%>:8000)
+<% else %>
+* Log into the [Deployit GUI](http://localhost:4516/)
+* Open the [Deployit online demo scenario](/onlinedemo/)
+* If you've already followed the demo scenario, you can [take a look at the deployed the PetPortal application](http://localhost:8000)
+<% end %>
+
+<br/>
+
+If you have any questions, contact us at demo-support@xebialabs.com or take a look at our [online documentation](http://docs.xebialabs.com).
+
+<br/>
+<br/>
+
+
+Sincerely, XebiaLabs

@@ -19,6 +19,11 @@ $CLI_HOME = $operatingsystem ? {
     default => '/home/ec2-user',
 }
 
+$HOMEPAGE_TEMPLATE = $operatingsystem ? {
+    'Ubuntu' => '/vagrant/templates/homepage.erb',
+    default => '/etc/puppet/onlinedemo/templates/homepage.erb',
+}
+
 Exec { path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ] }
 
 class { 'deployit':
@@ -150,11 +155,18 @@ class online-demo-docs {
   }
 
   file { 'install-online-demo-docs':
-    path => "/var/www/html/online-demo",
-    source   => "/demo-files/docs",
+    path => "/var/www/html",
+    source   => "/demo-files/html",
     ensure => present,
     recurse => true,
     require => File['create-target-dir'],
+  }
+
+  file { 'install-online-demo-homepage':
+    path => "/var/www/html/index.markdown",
+    content   => template("${HOMEPAGE_TEMPLATE}"),
+    ensure => file,
+    require => File['install-online-demo-docs'],
   }
 }
 

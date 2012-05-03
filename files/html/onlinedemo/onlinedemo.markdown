@@ -128,7 +128,7 @@ Now, our PetPortal page shows a new and improved PetPortal application:
 
 # Undeploying PetPortal from TEST #
 
-To completely remove the PetPortal application from the TEST environment and return it to it's original state, locate the PetPortal 2.0 deployment in the Deployed Application browser on the right-hand side of the Deployment screen:
+To completely remove the PetPortal application from the TEST environment, locate the PetPortal 2.0 deployment in the Deployed Application browser on the right-hand side of the Deployment screen:
 
 ![Undeployment - PetPortal 2.0 on TEST](images/undeployment-petportal-2.0-on-TEST.png "Undeployment - PetPortal 2.0 on TEST")
 
