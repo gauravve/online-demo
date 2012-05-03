@@ -21,7 +21,7 @@ $CLI_HOME = $operatingsystem ? {
 
 $HOMEPAGE_TEMPLATE = $operatingsystem ? {
     'Ubuntu' => '/vagrant/templates/homepage.erb',
-    default => '/etc/puppet/onlinedemo/templates/homepage.erb',
+    default => '/etc/puppet/online-demo/templates/homepage.erb',
 }
 
 Exec { path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ] }
