@@ -149,17 +149,11 @@ class deployit-data {
 class online-demo-docs {
   # Install online demo docs
 
-  file { 'create-target-dir':
-    path => "/var/www/html",
-    ensure => directory,
-  }
-
   file { 'install-online-demo-docs':
     path => "/var/www/html",
     source   => "/demo-files/html",
     ensure => present,
     recurse => true,
-    require => File['create-target-dir'],
   }
 
   file { 'install-online-demo-homepage':
