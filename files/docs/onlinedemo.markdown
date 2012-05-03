@@ -108,7 +108,7 @@ Now, let's check the Release Dashboard for final confirmation of the successful 
 
 Now that PetPortal 1.0 is deployed to the TEST environment, let's see if we can upgrade it to 2.0. Bring up the Release Dashboard for this version by clicking on the **_2.0_** PetPortal version in the left-hand window:
 
-![Release Dashboard - PetPortal 2.0](images/release-dashboard-PetPortal-2.0.png "Release Dashboard - PetPortal 2.0")
+![Release Dashboard - PetPortal 2.0](images/release-dashboard-petportal-2.0.png "Release Dashboard - PetPortal 2.0")
 
 The green border around the TEST environment indicates we can deploy the 2.0 version there, too. Start the deployment by clicking on the **Deploy** icon. The deployment screen is show, loaded with the upgrade:
 
