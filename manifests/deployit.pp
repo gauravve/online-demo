@@ -149,6 +149,10 @@ class deployit-data {
 class online-demo-docs {
   # Install online demo docs
 
+  file { ['/var', '/var/www', '/var/www/html']:
+    ensure => directory,
+  }
+
   file { 'install-online-demo-docs':
     path => "/var/www/html",
     source   => "/demo-files/html",

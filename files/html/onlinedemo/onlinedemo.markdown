@@ -4,6 +4,18 @@ Welcome to the Deployit online demo. This demo will give you a feel for the Depl
 
 To help you get started, we've provided this scripted scenario that takes you through a deployment, upgrade and undeployment with Deployit.
 
+# Online demo setup #
+
+The online demo is set up to provide you with a sandbox environment in which you can experiment with Deployit. The sandbox contains some sample data to get you started.
+
+The sandbox contains the _Pet Portal_ application, a fairly typical 3-tier JEE application with an HTML frontend, Java application layer and SQL database backend. The application contains static HTML that must be deployed to a webserver, a Java EAR archive that must be deployed to a JEE application server and SQL scripts that must be run against an SQL database.
+
+The environments we will be deploying _Pet Portal_ to have a standard DTAP structure, meaning it consists of development (DEV), test (TEST), acceptance (ACC) and production (PROD) environments. Each environment contains an Apache webserver, JBoss application server and MySQL database.
+
+The environments are scaled slightly differently. In the DEV environment, all middleware is installed on a single host. In the TEST environment, the middleware is spread over multiple hosts. The ACC environment has a redundant setup, with two instances of each type of middleware. The PROD environment, finally, is a virtual environment that does not have any fixed middleware defined.
+
+Note that in this sandbox, only deployments to the TEST environment can be seen.
+
 # Logging in #
 
 Let's start by logging into Deployit. Open a browser with a Flash plugin and navigate to the URL provided in the online demo email. You will be presented with a login screen:
@@ -72,7 +84,9 @@ Based on the types of package members and environment members, Deployit can figu
 
 ![Deployment - PetPortal 1.0 to TEST - mappings](images/deployment-petportal-1.0-to-TEST-mappings.png "Deployment - PetPortal 1.0 to TEST - mappings")
 
-As you can see, Deployit managed to map all of our package members to members of the environment: webserver configuration and HTML to the apache host, the datasource and EAR file to the application server and the SQL files to the database. There is also a `TestRunner` member in the environment which we'll talk about later.
+As you can see, Deployit managed to map all of our package members to members of the environment: webserver configuration and HTML to the apache host, the datasource and EAR file to the application server and the SQL files to the database. The CI `PetClinic-ds-on-wls` remains orange because it can not be mapped to any member of the environment. As it's name suggests, it is meant to be mapped to a WebLogic (wls) server. 
+
+The `TestRunner` environment member is a special case. It is a container to which _tests_ can be deployed that verify whether the deployment succeeded by accessing the deployed application. In this scenario, there are two tests in the package: one that test whether the PetPortal homepage can be reached and another that tests whether the webserver configuration that forwards requests to the PetClinic application is functioning correctly. You'll see the tests come by when we execute the deployment.
 
 With the mappings in place, we can now customize the way Deployit deploys the components to their containers. Clicking a particular deployed item (or _deployed_ for short) in the right box will bring up the balloon editor in which you can edit the deployed's values. Try clicking on the `PetPortal-host` deployed:
 
@@ -145,3 +159,9 @@ You can try accessing the PetPortal URL or Release Dashboard to validate the und
 That's the end of the Deployit online demo script. Hopefully you've gotten a feel for Deployit's capabilities and ease of use.
 
 We've only touched on the basics of what Deployit can do for you, so feel free to play around with the product in this environment. If you get stuck or are unsure what other features Deployit has, take a look at the [online documentation](http://docs.xebialabs.com).
+
+# Next steps #
+
+Here are some possibilities for experimenting further with Deployit:
+
+* see the differences in the deployment step list when deploying against the DEV, TEST, ACC or PROD environment.
