@@ -1,5 +1,15 @@
 from com.xebialabs.deployit.core.api.dto import ConfigurationItemDtos
 
+########
+# Global constants for the test data: 
+
+DEPLOYMENT_USERNAME = "deployment"
+DEPLOYMENT_PASSWORD = "deployment"
+APACHE_HOST = "localhost"
+JBOSS_HOST = "localhost"
+MYSQL_HOST = "localhost"
+DEPLOYIT_HOST = "localhost"
+
 def create(id, type, values):
    return factory.configurationItem(id, type, values)
 
@@ -33,7 +43,7 @@ def createLocalHost(id):
 	return create(resolveInfraId(id),'overthere.LocalHost',{'os':'UNIX','temporaryDirectoryPath':'/tmp'})
 
 def createVagrantSshHost(id, ipAddress):
-	return create(resolveInfraId(id),'overthere.SshHost',{'address':ipAddress,'os':'UNIX','connectionType':'INTERACTIVE_SUDO','username':'deployment','password':'deployment','port':'22', 'sudoUsername':'root', 'temporaryDirectoryPath':'/tmp'})
+	return create(resolveInfraId(id),'overthere.SshHost',{'address':ipAddress,'os':'UNIX','connectionType':'INTERACTIVE_SUDO','username':DEPLOYMENT_USERNAME,'password':DEPLOYMENT_PASSWORD,'port':'22', 'sudoUsername':'root', 'temporaryDirectoryPath':'/tmp'})
 
 def createLocalHostAndDummyApacheServer(hostId,serverNames, infraList, createHost=True):
 	hostId = (resolveInfraId(hostId))
@@ -51,13 +61,13 @@ def createLocalHostAndDummyJBossServer(hostId,serverNames, infraList, createHost
 		serverId = "%s/%s" % (hostId,serverName)
 		infraList.append(create(serverId,'jbossas.ServerV5', {'host': hostId, 'home':'/tmp', 'serverName':'default', 'controlPort':'1099','httpPort':'8080','ajpPort':'8009'}))
 
-def createLocalHostAndDummyOracleClient(hostId,serverNames, infraList, createHost=True):
+def createLocalHostAndDummyMySqlClient(hostId,serverNames, infraList, createHost=True):
 	hostId = (resolveInfraId(hostId))
 	if createHost:
 		infraList.append(createLocalHost(hostId))
 	for serverName in serverNames:
 		serverId = "%s/%s" % (hostId,serverName)
-		infraList.append(create(serverId,'sql.OracleClient', {'host': hostId, 'oraHome':'/tmp', 'sid':'default'}))
+		infraList.append(create(serverId,'sql.MySqlClient', {'host': hostId, 'password':'{b64}vNteSNQBPd8QU4OwGM6Yfw==','databaseName':'petportal','username':'petportal','mySqlHome':'/usr'}))
 
 def deleteIds(ids):
 	for id in ids:
@@ -80,7 +90,11 @@ deleteIds(['Applications/Composite', 'Applications/PetPortal', 'Applications/Pet
 repository.create(factory.configurationItem('Infrastructure/Dev','core.Directory',{}))
 repository.create(factory.configurationItem('Infrastructure/Ops','core.Directory',{}))
 repository.create(factory.configurationItem('Infrastructure/Ops/North','core.Directory',{}))
+repository.create(factory.configurationItem('Infrastructure/Ops/North/Acc','core.Directory',{}))
+repository.create(factory.configurationItem('Infrastructure/Ops/North/Prod','core.Directory',{}))
 repository.create(factory.configurationItem('Infrastructure/Ops/South','core.Directory',{}))
+repository.create(factory.configurationItem('Infrastructure/Ops/South/Acc','core.Directory',{}))
+repository.create(factory.configurationItem('Infrastructure/Ops/South/Prod','core.Directory',{}))
 
 repository.create(factory.configurationItem('Environments/Dev','core.Directory',{}))
 repository.create(factory.configurationItem('Environments/Ops','core.Directory',{}))
@@ -91,69 +105,82 @@ repository.create(factory.configurationItem('Environments/Dictionaries','core.Di
 infrastructureList = []
 
 # Acceptation Environment Infrastructure
-createLocalHostAndDummyApacheServer('Ops/North/ACC-Webserver-1', ['Apache-1'], infrastructureList)
-createLocalHostAndDummyApacheServer('Ops/South/ACC-Webserver-2', ['Apache-2'], infrastructureList)
-createLocalHostAndDummyJBossServer('Ops/North/ACC-Appserver-1',['AppServer-1'], infrastructureList)
-createLocalHostAndDummyJBossServer('Ops/South/ACC-Appserver-2',['AppServer-2'], infrastructureList)
-createLocalHostAndDummyOracleClient('Ops/North/ACC-Database-1',['ACC-Oracle-1'], infrastructureList)
-createLocalHostAndDummyOracleClient('Ops/South/ACC-Database-2',['ACC-Oracle-2'], infrastructureList)
+createLocalHostAndDummyApacheServer('Ops/North/Acc/Webserver-1', ['Apache'], infrastructureList)
+createLocalHostAndDummyApacheServer('Ops/South/Acc/Webserver-2', ['Apache'], infrastructureList)
+createLocalHostAndDummyJBossServer('Ops/North/Acc/Appserver-1',['JBoss'], infrastructureList)
+createLocalHostAndDummyJBossServer('Ops/South/Acc/Appserver-2',['JBoss'], infrastructureList)
+createLocalHostAndDummyMySqlClient('Ops/North/Acc/Database-1',['MySql'], infrastructureList)
+createLocalHostAndDummyMySqlClient('Ops/South/Acc/Database-2',['MySql'], infrastructureList)
 
 # Developement Environment Infrastructure
-createLocalHostAndDummyApacheServer('Dev/DEV-Localhost', ['DEV-Apache'], infrastructureList)
-createLocalHostAndDummyJBossServer('Dev/DEV-Localhost',['DEV-AppServer'], infrastructureList, False)
-createLocalHostAndDummyOracleClient('Dev/DEV-Localhost',['DEV-MySql'], infrastructureList, False)
-infrastructureList.append(create('Infrastructure/Dev/DEV-Localhost/DEV-TestRunner','tests2.TestRunner',{'host':'Infrastructure/Dev/DEV-Localhost','name':'TEST-TestRunner'}))
+createLocalHostAndDummyApacheServer('Dev/DevServer', ['Apache'], infrastructureList)
+createLocalHostAndDummyJBossServer('Dev/DevServer',['JBoss'], infrastructureList, False)
+createLocalHostAndDummyMySqlClient('Dev/DevServer',['MySql'], infrastructureList, False)
+infrastructureList.append(create('Infrastructure/Dev/DevServer/TestRunner','tests2.TestRunner',{'host':'Infrastructure/Dev/DevServer','name':'TestRunner'}))
 
 # Real Vagrant Test Environment Infrastructure
-webServerHost = createVagrantSshHost('Infrastructure/Dev/TEST-Webserver','localhost')
+webServerHost = createVagrantSshHost('Infrastructure/Dev/Webserver', APACHE_HOST)
 infrastructureList.append(webServerHost)
-infrastructureList.append(create('Infrastructure/Dev/TEST-Webserver/TEST-Apache','www.ApacheHttpdServer', {'host': webServerHost.id,'stopCommand':'/usr/sbin/apachectl stop','startWaitTime':'5','startCommand':'/usr/sbin/apachectl start','stopWaitTime':'0','defaultDocumentRoot':'/var/www','configurationFragmentDirectory':'/etc/httpd/conf.d','restartCommand':'/usr/sbin/apachectl restart', 'restartWaitTime':'0'}))
-infrastructureList.append(create('Infrastructure/Dev/TEST-Webserver/TEST-TestRunner','tests2.TestRunner',{'host':webServerHost.id,'name':'TEST-TestRunner'}))
+infrastructureList.append(create('Infrastructure/Dev/Webserver/Apache','www.ApacheHttpdServer', {'host': webServerHost.id,'stopCommand':'/usr/sbin/apachectl stop','startWaitTime':'5','startCommand':'/usr/sbin/apachectl start','stopWaitTime':'0','defaultDocumentRoot':'/var/www','configurationFragmentDirectory':'/etc/httpd/conf.d','restartCommand':'/usr/sbin/apachectl restart', 'restartWaitTime':'0'}))
+infrastructureList.append(create('Infrastructure/Dev/Webserver/TestRunner','tests2.TestRunner',{'host':webServerHost.id,'name':'TestRunner'}))
 
-appServerHost = createVagrantSshHost('Infrastructure/Dev/TEST-Appserver','localhost')
+appServerHost = createVagrantSshHost('Infrastructure/Dev/Appserver',JBOSS_HOST)
 infrastructureList.append(appServerHost)
-infrastructureList.append(create('Infrastructure/Dev/TEST-Appserver/TEST-AppServer','jbossas.ServerV5',{'home':'/opt/jboss-5.1.0.GA','host':appServerHost.id,'controlPort':'1099','httpPort':'8080','ajpPort':'8009','serverName':'default','startWaitTime':'45'}))
+infrastructureList.append(create('Infrastructure/Dev/Appserver/JBoss','jbossas.ServerV5',{'home':'/opt/jboss-5.1.0.GA','host':appServerHost.id,'controlPort':'1099','httpPort':'8080','ajpPort':'8009','serverName':'default','startWaitTime':'45'}))
 
-dbServerHost = createVagrantSshHost('Infrastructure/Dev/TEST-Database','localhost')
+dbServerHost = createVagrantSshHost('Infrastructure/Dev/Database',MYSQL_HOST)
 infrastructureList.append(dbServerHost)
-infrastructureList.append(create('Infrastructure/Dev/TEST-Database/TEST-MySql','sql.MySqlClient',{'host':dbServerHost.id,'password':'{b64}vNteSNQBPd8QU4OwGM6Yfw==','databaseName':'petportal','username':'petportal','mySqlHome':'/usr'}))
+infrastructureList.append(create('Infrastructure/Dev/Database/MySql','sql.MySqlClient',{'host':dbServerHost.id,'password':'{b64}vNteSNQBPd8QU4OwGM6Yfw==','databaseName':'petportal','username':'petportal','mySqlHome':'/usr'}))
 
 
 # Production Environment Infrastructure
-createLocalHostAndDummyApacheServer('Ops/North/PROD-Webserver-1', ['Apache-1'], infrastructureList)
-createLocalHostAndDummyApacheServer('Ops/South/PROD-Webserver-2', ['Apache-2'], infrastructureList)
-createLocalHostAndDummyApacheServer('Ops/North/PROD-Webserver-3', ['Apache-3'], infrastructureList)
-createLocalHostAndDummyApacheServer('Ops/South/PROD-Webserver-4', ['Apache-4'], infrastructureList)
+createLocalHostAndDummyApacheServer('Ops/North/Prod/Webserver-1', ['Apache'], infrastructureList)
+createLocalHostAndDummyApacheServer('Ops/South/Prod/Webserver-2', ['Apache'], infrastructureList)
+createLocalHostAndDummyApacheServer('Ops/North/Prod/Webserver-3', ['Apache'], infrastructureList)
+createLocalHostAndDummyApacheServer('Ops/South/Prod/Webserver-4', ['Apache'], infrastructureList)
 
-createLocalHostAndDummyJBossServer('Ops/North/PROD-Appserver-1',['PROD-AppServer-1'], infrastructureList)
-createLocalHostAndDummyJBossServer('Ops/South/PROD-Appserver-2',['PROD-AppServer-2'], infrastructureList)
-createLocalHostAndDummyJBossServer('Ops/North/PROD-Appserver-3',['PROD-AppServer-3'], infrastructureList)
-createLocalHostAndDummyJBossServer('Ops/South/PROD-Appserver-4',['PROD-AppServer-4'], infrastructureList)
+createLocalHostAndDummyJBossServer('Ops/North/Prod/Appserver-1',['JBoss'], infrastructureList)
+createLocalHostAndDummyJBossServer('Ops/South/Prod/Appserver-2',['JBoss'], infrastructureList)
+createLocalHostAndDummyJBossServer('Ops/North/Prod/Appserver-3',['JBoss'], infrastructureList)
+createLocalHostAndDummyJBossServer('Ops/South/Prod/Appserver-4',['JBoss'], infrastructureList)
 
-createLocalHostAndDummyOracleClient('Ops/North/PROD-Database-1',['PROD-Oracle-1'], infrastructureList)
-createLocalHostAndDummyOracleClient('Ops/South/PROD-Database-2',['PROD-Oracle-2'], infrastructureList)
-createLocalHostAndDummyOracleClient('Ops/North/PROD-Database-3',['PROD-Oracle-3'], infrastructureList)
-createLocalHostAndDummyOracleClient('Ops/South/PROD-Database-4',['PROD-Oracle-4'], infrastructureList)
+createLocalHostAndDummyMySqlClient('Ops/North/Prod/Database-1',['MySql'], infrastructureList)
+createLocalHostAndDummyMySqlClient('Ops/South/Prod/Database-2',['MySql'], infrastructureList)
+createLocalHostAndDummyMySqlClient('Ops/North/Prod/Database-3',['MySql'], infrastructureList)
+createLocalHostAndDummyMySqlClient('Ops/South/Prod/Database-4',['MySql'], infrastructureList)
 save(infrastructureList)
 
 
 environmentsList = []
 
-environmentsList.append(create('Environments/Dev/TEST','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict'], 'members':['Infrastructure/Dev/TEST-Webserver/TEST-TestRunner', 'Infrastructure/Dev/TEST-Webserver/TEST-Apache','Infrastructure/Dev/TEST-Database/TEST-MySql', 'Infrastructure/Dev/TEST-Appserver/TEST-AppServer']}))
-environmentsList.append(create('Environments/Ops/Acc/ACC','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict'], 'members':['Infrastructure/Ops/South/ACC-Database-2/ACC-Oracle-2','Infrastructure/Ops/North/ACC-Database-1/ACC-Oracle-1','Infrastructure/Ops/South/ACC-Webserver-2/Apache-2','Infrastructure/Ops/North/ACC-Webserver-1/Apache-1','Infrastructure/Ops/South/ACC-Appserver-2/AppServer-2','Infrastructure/Ops/North/ACC-Appserver-1/AppServer-1']}))
-environmentsList.append(create('Environments/Dev/DEV','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict-DEV'], 'members':['Infrastructure/Dev/DEV-Localhost/DEV-TestRunner','Infrastructure/Dev/DEV-Localhost/DEV-Apache', 'Infrastructure/Dev/DEV-Localhost/DEV-MySql', 'Infrastructure/Dev/DEV-Localhost/DEV-AppServer']}))
+environmentsList.append(create('Environments/Dev/DEV','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict-DEV'], 
+	'members':[
+		'Infrastructure/Dev/DevServer/TestRunner','Infrastructure/Dev/DevServer/Apache', 'Infrastructure/Dev/DevServer/MySql', 'Infrastructure/Dev/DevServer/JBoss'
+		]}))
+environmentsList.append(create('Environments/Dev/TEST','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict'], 
+	'members':[
+		'Infrastructure/Dev/Webserver/TestRunner', 'Infrastructure/Dev/Webserver/Apache','Infrastructure/Dev/Database/MySql', 'Infrastructure/Dev/Appserver/JBoss'
+	]}))
+environmentsList.append(create('Environments/Ops/Acc/ACC','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict'], 
+	'members':[
+		'Infrastructure/Ops/South/Acc/Database-2/MySql','Infrastructure/Ops/North/Acc/Database-1/MySql','Infrastructure/Ops/South/Acc/Webserver-2/Apache',
+		'Infrastructure/Ops/North/Acc/Webserver-1/Apache','Infrastructure/Ops/South/Acc/Appserver-2/JBoss','Infrastructure/Ops/North/Acc/Appserver-1/JBoss'
+	]}))
 environmentsList.append(create('Environments/Ops/Prod/PROD','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict'],
-  'members':['Infrastructure/Ops/South/PROD-Database-2/PROD-Oracle-2','Infrastructure/Ops/North/PROD-Database-1/PROD-Oracle-1','Infrastructure/Ops/South/PROD-Webserver-2/Apache-2','Infrastructure/Ops/North/PROD-Webserver-1/Apache-1',
-    'Infrastructure/Ops/South/PROD-Database-4/PROD-Oracle-4','Infrastructure/Ops/North/PROD-Database-3/PROD-Oracle-3','Infrastructure/Ops/South/PROD-Webserver-4/Apache-4','Infrastructure/Ops/North/PROD-Webserver-3/Apache-3',
-    'Infrastructure/Ops/North/PROD-Appserver-1/PROD-AppServer-1','Infrastructure/Ops/North/PROD-Appserver-3/PROD-AppServer-3','Infrastructure/Ops/South/PROD-Appserver-2/PROD-AppServer-2','Infrastructure/Ops/South/PROD-Appserver-4/PROD-AppServer-4']}))
+  'members':[
+  	'Infrastructure/Ops/South/Prod/Database-2/MySql','Infrastructure/Ops/North/Prod/Database-1/MySql','Infrastructure/Ops/South/Prod/Webserver-2/Apache',
+  	'Infrastructure/Ops/North/Prod/Webserver-1/Apache','Infrastructure/Ops/South/Prod/Database-4/MySql','Infrastructure/Ops/North/Prod/Database-3/MySql',
+  	'Infrastructure/Ops/South/Prod/Webserver-4/Apache','Infrastructure/Ops/North/Prod/Webserver-3/Apache','Infrastructure/Ops/North/Prod/Appserver-1/JBoss',
+  	'Infrastructure/Ops/North/Prod/Appserver-3/JBoss','Infrastructure/Ops/South/Prod/Appserver-2/JBoss','Infrastructure/Ops/South/Prod/Appserver-4/JBoss'
+   ]}))
 
 
 environmentsList.append(create('Environments/Dictionaries/PetPortal-Dict','udm.Dictionary',
   {'entries':{'APACHE_PORT':'8000','APACHE_HOST':'localhost','APPSERVER_HOST':'localhost','APPSERVER_PORT':'8080',
-  'DB_URL':'jdbc:oracle:thin:@localhost:orcl', 'PETPORTAL_TITLE':'Dierenportaal','DB_USERNAME':'petportal','DB_PASSWORD':'petportal','PETCLINIC_CONTEXT_ROOT':'petclinic'}}))
+  'DB_URL':'jdbc:mysql:@localhost:mysql', 'PETPORTAL_TITLE':'The Pet Portal (C) Site','DB_USERNAME':'petportal','DB_PASSWORD':'petportal','PETCLINIC_CONTEXT_ROOT':'petclinic'}}))
 environmentsList.append(create('Environments/Dictionaries/PetPortal-Dict-DEV','udm.Dictionary',
   {'entries':{'APACHE_PORT':'80','APACHE_HOST':'localhost','APPSERVER_HOST':'localhost','APPSERVER_PORT':'80',
-  'DB_URL':'jdbc:oracle:thin:@localhost:orcl', 'PETPORTAL_TITLE':'Dierenportaal','DB_USERNAME':'petportal','DB_PASSWORD':'petportal','PETCLINIC_CONTEXT_ROOT':'petclini'}}))
+  'DB_URL':'jdbc:mysql:@localhost:mysql', 'PETPORTAL_TITLE':'Pet Portal DEVELOPMENT','DB_USERNAME':'petportal','DB_PASSWORD':'petportal','PETCLINIC_CONTEXT_ROOT':'petclinic'}}))
 save(environmentsList)
 
 ## Additional info for Security and Pipeline demo
@@ -274,6 +301,3 @@ security.grant('repo#edit', 'ops-north', [ 'Infrastructure/Ops/North' ])
 security.grant('read', 'ops-north', [ 'Infrastructure/Ops', 'Infrastructure/Ops/North' ])
 security.grant('repo#edit', 'ops-south', [ 'Infrastructure/Ops/South' ])
 security.grant('read', 'ops-south', [ 'Infrastructure/Ops', 'Infrastructure/Ops/South' ])
-
-
-

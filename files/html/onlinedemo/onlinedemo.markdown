@@ -165,3 +165,5 @@ We've only touched on the basics of what Deployit can do for you, so feel free t
 Here are some possibilities for experimenting further with Deployit:
 
 * see the differences in the deployment step list when deploying against the DEV, TEST, ACC or PROD environment.
+* use control tasks on the Apache webserver to start and stop it.
+* 
