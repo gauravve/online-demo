@@ -11,7 +11,7 @@ Name: PetClinic-ds-on-jboss
 CI-Type: jbossas.NonTransactionalDatasourceSpec
 CI-jndiName: jdbc/pets
 CI-connectionURL: {{DB_URL}}
-CI-driverClass: oracle.jdbc.OracleDriver
+CI-driverClass: com.mysql.jdbc.Driver
 CI-username: {{DB_USERNAME}}
 CI-password: {{DB_PASSWORD}}
 
@@ -19,7 +19,7 @@ Name: PetClinic-ds-on-wls
 CI-Type: wls.DataSourceSpec
 CI-jndiNames: jdbc/pets
 CI-url: {{DB_URL}}
-CI-driverName: oracle.jdbc.OracleDriver
+CI-driverName: com.mysql.jdbc.Driver
 CI-username: {{DB_USERNAME}}
 CI-password: {{DB_PASSWORD}}
 

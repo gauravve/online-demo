@@ -1,27 +1,23 @@
 <?xml version="1.0" ?>
 <synthetic xmlns="http://www.xebialabs.com/deployit/synthetic">
 
-<!--
-<type-modification type="www.PublishedWebContent">
-	<property name="targetDirectory" description="Target directory name (unhidden)" hidden="false" default="&lt;#assign target=(deployed.virtualHost.documentRoot)!''/&gt;&lt;#if target != ''&gt;${target}&lt;#else&gt;${deployed.container.defaultDocumentRoot}&lt;/#if&gt;"/>
-</type-modification>
--->
-
-<!-- Extension for JBoss + Apache + Oracle demo -->
+	<!-- Add Apache ProxyPass extension -->
 	<type type="www.ApacheProxyPassSetting" extends="www.ApacheConfFragment" deployable-type="www.ApacheProxyPassSpec">
 		<generate-deployable type="www.ApacheProxyPassSpec" extends="generic.Resource" />
-  
+
 		<property name="from" />
 		<property name="to" />
 		<property name="options" required="false" default="" />
 		<property name="reverse" kind="boolean" required="false" default="false" />
 	</type>
 	
+	<!-- Set default start/stop wait times -->
 	<type-modification type="jbossas.ServerV5">
 		<property name="startWaitTime" kind="integer" default="45" hidden="true"/>
 		<property name="stopWaitTime" kind="integer" default="5" hidden="true"/>
 	</type-modification>
 	
+	<!-- Release dashboard deployment conditions -->
 	<type-modification type="udm.Environment">
 	  <property name="requiresReleaseNotes" description="Release notes are required"
 	            kind="boolean" required="false" category="Deployment Checklist" />
@@ -40,4 +36,27 @@
 	            kind="string" required="false" category="Deployment Checklist"/>
 	</type-modification>
 
+	<!-- To enable deployments to all environments, create demo CI types for Apache, JBoss, MySql -->
+    <type type="demo.ApacheHttpdServer" extends="www.ApacheHttpdServer" description="Demo Apache HTTPD web server">
+        <property name="defaultDocumentRoot" default="/tmp" hidden="true"/>
+        <property name="configurationFragmentDirectory" default="/tmp" hidden="true"/>
+
+		<property name="startScript" default="demo/apache/start" hidden="true" description="The command to start Apache. Arguments containing spaces are not supported"/>
+        <property name="stopScript" default="demo/apache/stop" hidden="true" description="The command to stop Apache. Arguments containing spaces are not supported"/>
+    </type>
+
+    <type type="demo.JBoss" extends="jbossas.ServerV5" description="Demo JBoss server">
+        <property name="home" default="/tmp" hidden="true"/>
+		<property name="startWaitTime" kind="integer" default="5" hidden="true"/>
+		<property name="stopWaitTime" kind="integer" default="5" hidden="true"/>
+
+		<property name="startScript" default="demo/jboss/start" hidden="true" description="Script used to start the server"/>
+		<property name="stopScript" default="demo/jboss/stop" hidden="true" description="Script used to stop the server"/>
+    </type>
+
+    <type type="demo.MySql" extends="sql.MySqlClient" description="Demo MySql server">
+        <property name="mySqlHome" default="/tmp" hidden="true"/>
+
+		<property name="clientWrapperScript" hidden="true" default="demo/mysql/mysql" />
+    </type>
 </synthetic>

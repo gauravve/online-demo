@@ -105,7 +105,7 @@ class deployit-install {
     require => Deployit::Server["install-server"],
   }
 
-  # Install support for Apache ProxyPass settings
+  # Install custom synthetic
 
   file { 'install-synthetic':
     path => "/opt/deployit-server/ext/synthetic.xml",
@@ -113,6 +113,8 @@ class deployit-install {
     ensure => present,
     require => Deployit::Server["install-server"],
   }
+
+  # Install support for Apache ProxyPass settings
 
   file { 'install-proxypass-template':
     path => "/opt/deployit-server/ext/www",
@@ -131,6 +133,20 @@ class deployit-install {
     recurse => true,
     require => Deployit::Server["install-server"],
   }
+
+  file { 'install-demo-plugin':
+    path => "/opt/deployit-server/ext/demo",
+    source   => "/demo-files/demo",
+    ensure => directory,
+    recurse => true,
+    require => Deployit::Server["install-server"],
+  }
+
+  file { ['/tmp/server', '/tmp/server/default', '/tmp/server/default/deploy']:
+    ensure => directory,
+    require => Deployit::Server["install-server"],
+  }
+
 }
 
 class deployit-start {

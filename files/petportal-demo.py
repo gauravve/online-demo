@@ -51,7 +51,7 @@ def createLocalHostAndDummyApacheServer(hostId,serverNames, infraList, createHos
 		infraList.append(createLocalHost(hostId))
 	for serverName in serverNames:
 		serverId = "%s/%s" % (hostId,serverName)
-		infraList.append(create(serverId,'www.ApacheHttpdServer', {'host': hostId,'stopCommand':'echo stopping','startWaitTime':'0','startCommand':'echo starting','stopWaitTime':'0','defaultDocumentRoot':'/tmp','configurationFragmentDirectory':'/tmp'}))
+		infraList.append(create(serverId,'demo.ApacheHttpdServer', {'host': hostId,'stopCommand':'echo stopping','startWaitTime':'0','startCommand':'echo starting','stopWaitTime':'0','defaultDocumentRoot':'/tmp','configurationFragmentDirectory':'/tmp'}))
 
 def createLocalHostAndDummyJBossServer(hostId,serverNames, infraList, createHost=True):
 	hostId = (resolveInfraId(hostId))
@@ -59,7 +59,7 @@ def createLocalHostAndDummyJBossServer(hostId,serverNames, infraList, createHost
 		infraList.append(createLocalHost(hostId))
 	for serverName in serverNames:
 		serverId = "%s/%s" % (hostId,serverName)
-		infraList.append(create(serverId,'jbossas.ServerV5', {'host': hostId, 'home':'/tmp', 'serverName':'default', 'controlPort':'1099','httpPort':'8080','ajpPort':'8009'}))
+		infraList.append(create(serverId,'demo.JBoss', {'host': hostId, 'home':'/tmp', 'serverName':'default', 'controlPort':'1099','httpPort':'8080','ajpPort':'8009'}))
 
 def createLocalHostAndDummyMySqlClient(hostId,serverNames, infraList, createHost=True):
 	hostId = (resolveInfraId(hostId))
@@ -67,7 +67,7 @@ def createLocalHostAndDummyMySqlClient(hostId,serverNames, infraList, createHost
 		infraList.append(createLocalHost(hostId))
 	for serverName in serverNames:
 		serverId = "%s/%s" % (hostId,serverName)
-		infraList.append(create(serverId,'sql.MySqlClient', {'host': hostId, 'password':'{b64}vNteSNQBPd8QU4OwGM6Yfw==','databaseName':'petportal','username':'petportal','mySqlHome':'/usr'}))
+		infraList.append(create(serverId,'demo.MySql', {'host': hostId, 'password':'{b64}vNteSNQBPd8QU4OwGM6Yfw==','databaseName':'petportal','username':'petportal','mySqlHome':'/tmp'}))
 
 def deleteIds(ids):
 	for id in ids:
@@ -116,7 +116,6 @@ createLocalHostAndDummyMySqlClient('Ops/South/Acc/Database-2',['MySql'], infrast
 createLocalHostAndDummyApacheServer('Dev/DevServer', ['Apache'], infrastructureList)
 createLocalHostAndDummyJBossServer('Dev/DevServer',['JBoss'], infrastructureList, False)
 createLocalHostAndDummyMySqlClient('Dev/DevServer',['MySql'], infrastructureList, False)
-infrastructureList.append(create('Infrastructure/Dev/DevServer/TestRunner','tests2.TestRunner',{'host':'Infrastructure/Dev/DevServer','name':'TestRunner'}))
 
 # Real Vagrant Test Environment Infrastructure
 webServerHost = createVagrantSshHost('Infrastructure/Dev/Webserver', APACHE_HOST)
@@ -155,7 +154,7 @@ environmentsList = []
 
 environmentsList.append(create('Environments/Dev/DEV','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict-DEV'], 
 	'members':[
-		'Infrastructure/Dev/DevServer/TestRunner','Infrastructure/Dev/DevServer/Apache', 'Infrastructure/Dev/DevServer/MySql', 'Infrastructure/Dev/DevServer/JBoss'
+		'Infrastructure/Dev/DevServer/Apache', 'Infrastructure/Dev/DevServer/MySql', 'Infrastructure/Dev/DevServer/JBoss'
 		]}))
 environmentsList.append(create('Environments/Dev/TEST','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict'], 
 	'members':[
