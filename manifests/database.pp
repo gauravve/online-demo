@@ -4,18 +4,9 @@ $mysql_password = 'centos'
 
 class mysql {
   
-  #
-  # Yum update
-  #
-  exec { "yum-update":
-    command     => "/usr/bin/yum update",
-  }
-
-  Exec["yum-update"] -> Package <| |>
-
   package { "mysql-server": ensure => installed }
 
-  service { "mysqld":
+  service { "mysql":
     enable => true,
     ensure => running,
     require => Package["mysql-server"],
@@ -25,7 +16,7 @@ class mysql {
     unless => "mysqladmin -uroot -p$mysql_password status",
     path => ["/bin", "/usr/bin"],
     command => "mysqladmin -uroot password $mysql_password",
-    require => Service["mysqld"],
+    require => Service["mysql"],
   }
 
  exec { "create-petportal-db":
@@ -36,3 +27,4 @@ class mysql {
 
 }
 include mysql
+

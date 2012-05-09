@@ -204,3 +204,4 @@ Here are some possibilities for discovering other features in Deployit:
 	* ops-north / ops-north
 	* ops-south / ops-south
 * change environment-specific settings in one of the available dictionaries, then redeploy the application to see the changes you made.
+* deploy the PetPortal/1.0 package to the ACC or PROD environments. Be sure to fill out the deployment checklist before starting this deployment.

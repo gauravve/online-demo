@@ -2,20 +2,11 @@
 
 class httpd {
   
-  #
-  # Yum update
-  #
-  exec { "yum-update":
-    command     => "/usr/bin/yum update",
-  }
-
-  Exec["yum-update"] -> Package <| |>
-
-  package { 'httpd':
+  package { 'apache2':
     ensure => present,
   }
 
-  service { 'httpd':
+  service { 'apache2':
     ensure => running,
   }
 }
