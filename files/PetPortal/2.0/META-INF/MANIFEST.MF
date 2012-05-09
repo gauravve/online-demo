@@ -15,14 +15,6 @@ CI-driverClass: com.mysql.jdbc.Driver
 CI-username: {{DB_USERNAME}}
 CI-password: {{DB_PASSWORD}}
 
-Name: PetClinic-ds-on-wls
-CI-Type: wls.DataSourceSpec
-CI-jndiNames: jdbc/pets
-CI-url: {{DB_URL}}
-CI-driverName: com.mysql.jdbc.Driver
-CI-username: {{DB_USERNAME}}
-CI-password: {{DB_PASSWORD}}
-
 Name: PetPortal_pages
 CI-Type: www.WebContent
 CI-Name: webContent

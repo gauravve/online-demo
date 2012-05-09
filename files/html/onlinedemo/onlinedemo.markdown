@@ -2,19 +2,19 @@
 
 Welcome to the Deployit online demo. This demo will give you a feel for the Deployit product and allows you to play around with it in a "safe" environment.
 
-To help you get started, we've provided this scripted scenario that takes you through a deployment, upgrade and undeployment with Deployit.
+To help you get started, we've provided this scripted scenario that takes you through a deployment, upgrade and undeployment with Deployit and highlights some of its features.
 
-# Online demo setup #
+# Demo sandbox setup #
 
 The online demo is set up to provide you with a sandbox environment in which you can experiment with Deployit. The sandbox contains some sample data to get you started.
 
-The sandbox contains the _Pet Portal_ application, a fairly typical 3-tier JEE application with an HTML frontend, Java application layer and SQL database backend. The application contains static HTML that must be deployed to a webserver, a Java EAR archive that must be deployed to a JEE application server and SQL scripts that must be run against an SQL database.
+The main application in the sandbox is _Pet Portal_, a fairly typical 3-tier JEE application with an HTML frontend, Java application layer and SQL database backend. The application contains static HTML that must be deployed to a webserver, a Java EAR archive that must be deployed to a JEE application server and SQL scripts that must be run against a database.
 
-The environments we will be deploying _Pet Portal_ to have a standard DTAP structure, meaning it consists of development (DEV), test (TEST), acceptance (ACC) and production (PROD) environments. Each environment contains an Apache webserver, JBoss application server and MySQL database.
+The environments we will be deploying _Pet Portal_ to have a standard DTAP structure, meaning there are development (DEV), test (TEST), acceptance (ACC) and production (PROD) environments. Each environment contains an Apache webserver, JBoss application server and MySQL database.
 
-The environments are scaled slightly differently. In the DEV environment, all middleware is installed on a single host. In the TEST environment, the middleware is spread over multiple hosts. The ACC environment has a redundant setup, with two instances of each type of middleware. The PROD environment, finally, is a virtual environment that does not have any fixed middleware defined.
+The environments increase in scale. In the DEV environment, all middleware is installed on a single host. In the TEST environment, the middleware is spread over multiple hosts. The ACC environment has a redundant setup, with two instances of each type of middleware. The PROD environment, finally, has four instances of each middleware type.
 
-Note that in this sandbox, only deployments to the TEST environment can be seen.
+Deployments in the sandbox are possible to each of the mentioned environments, but only deployments to the TEST environment can be seen.
 
 # Logging in #
 
@@ -22,7 +22,7 @@ Let's start by logging into Deployit. Open a browser with a Flash plugin and nav
 
 ![Deployit Login](images/deployit-login.png "Deployit Login")
 
-Enter the administrator credentials you received into the username and password fields and click the button.
+Enter the credentials you received into the username and password fields and click the button.
 
 You will now see the main Deployit user interface:
 
@@ -40,9 +40,9 @@ In the top-right corner, you will find a a dropdown menu that offers access to t
 
 Let's start by taking a look at what the demo environment looks like.
 
-# The Release Dashboard #
+# Getting an overview #
 
-Click on the Release Dashboard tab in the navigation bar. You'll see a release dashboard, currently empty:
+Click on the **Release Dashboard** tab in the navigation bar. You'll see a release dashboard, currently empty:
 
 ![Release Dashboard](images/release-dashboard.png "Release Dashboard")
 
@@ -66,7 +66,7 @@ The PROD environment requires that the package has release notes (the `1.0` vers
 
 To move our `PetPortal` 1.0 application further along it's deployment pipeline, let's deploy it to the TEST environment. Click on the deployment icon (parachute) in the TEST environment box to start.
 
-# Deploying PetPortal 1.0 to TEST #
+# Your application's initial deployment #
 
 This brings up the deployment screen that was open when Deployit started. This time, though, it looks like this:
 
@@ -74,9 +74,13 @@ This brings up the deployment screen that was open when Deployit started. This t
 
 The central part of this screen shows the deployment we have just started -- PetPortal/1.0 to the TEST environment. Because there is currently no version of PetPortal deployed to the environment, this is called an _initial_ deployment.
 
-The `PetPortal/1.0` package we want to deploy is shown in the left box. Here, you can see which Configuration Items (CIs for short) are part of this application package. The package consists of everything the PetPortal application needs to run. That includes artifact CIs (`PetClinic-ear`, an EAR file or `sql`, a folder of SQL scripts for the database) and resource CIs (`PetClinic-ds-on-jboss`, a datasource or `PetPortal-host`, an Apache virtual host). The members are all colored orange because they have not yet been mapped to members in the target environment.
+The `PetPortal/1.0` package we want to deploy is shown in the left box. **Packages** in Deployit are complete applications that can be deployed to an environment. A package is _environment-independent_ meaning that it can be deployed unchanged to any environment. Deployit takes care of environment-specific configuration settings that may be required, such as database URLs or passwords.
 
-The right box shows the TEST environment. It consists of a number of containers that we can deploy to: `TEST-Apache`, an apache webserver, `TEST-AppServer`, a JBoss application server and `TEST-MySql`, a database.
+The screen shows you which Configuration Items (CIs for short) are part of the application package. In this case, this includes artifact CIs (`PetClinic-ear`, an EAR file or `sql`, a folder of SQL scripts for the database) and resource CIs (`PetClinic-ds-on-jboss`, a datasource or `PetPortal-host`, an Apache virtual host). The members are all colored orange because they have not yet been mapped to members in the target environment.
+
+The right box shows the TEST environment. **Environments** in Deployit are collections of middleware to which packages can be deployed.
+
+The TEST environment consists of the following containers that we can deploy to: `Apache`, an apache webserver, `JBoss`, a JBoss application server and `MySql`, a database.
 
 Before we can deploy our application, we need to tell Deployit which components of the PetPortal/1.0 package should be deployed to which members of the environment. We can do this by hand, by dragging and dropping the individual package members to the environment members, but there is a better way. 
 
@@ -114,33 +118,47 @@ The PetPortal application is now available via the URL mentioned in the online d
 
 ![PetPortal 1.0](images/petportal-1.0.png "PetPortal 1.0")
 
+As you can see, the title of the Pet Portal application, _Welcome to the Pet Portal on TEST_ includes the environment name. This is an example of an environment-specific configuration placeholder that Deployit replaced in the application during deployment. The application package itself, PetPortal/1.0, is _environment independent_ which means it can be deployed to any environment unchanged. Deployit takes care of replacing environment-specific placeholders when the application is being deployed.
+
 Now, let's check the Release Dashboard for final confirmation of the successful initial deployment to the TEST environment. This shows the following:
 
 ![Release Dashboard - PetPortal 1.0 on TEST](images/release-dashboard-petportal-1.0-on-TEST.png "Release Dashboard - PetPortal 1.0 on TEST")
 
-# Upgrading PetPortal to 2.0 on TEST #
+Everything is looking good!
+
+# Upgrading your application #
 
 Now that PetPortal 1.0 is deployed to the TEST environment, let's see if we can upgrade it to 2.0. Bring up the Release Dashboard for this version by clicking on the **_2.0_** PetPortal version in the left-hand window:
 
 ![Release Dashboard - PetPortal 2.0](images/release-dashboard-petportal-2.0.png "Release Dashboard - PetPortal 2.0")
 
-The green border around the TEST environment indicates we can deploy the 2.0 version there, too. Start the deployment by clicking on the **Deploy** icon. The deployment screen is show, loaded with the upgrade:
+The green border around the TEST environment indicates we can deploy the 2.0 version there, too. Start the deployment by clicking on the **Deploy** icon. The deployment screen is shown again:
 
 ![Deployment - PetPortal 2.0 to TEST](images/deployment-petportal-2.0-to-TEST.png "Deployment - PetPortal 2.0 to TEST")
 
-Note that the mappings we made during our previous deployment are all reused here so we don't have to configure anything. If the new version of PetPortal contained additional components or some components had been removed, we would have had to update the mappings on this screen. Because this is not the case, we can continue straight on to the steplist by clicking on the **Next** button:
+This time, the screen shows an _upgrade_ deployment, a change to a deployment that is already present on the environment. Note that the mappings we made during our previous deployment are all reused here so we don't have to configure anything. If the new version of PetPortal contained additional components or some components had been removed, we would have had to update the mappings on this screen. Because this is not the case, we can continue straight on to the steplist by clicking on the **Next** button:
 
 ![Deployment - PetPortal 2.0 to TEST - steplist](images/deployment-petportal-2.0-to-TEST-steplist.png "Deployment - PetPortal 2.0 to TEST - steplist")
 
-The steplist is different this time. Deployit only generates steps for components that have changed since the last deployment. Because the datasource hasn't changed, there are no steps in the steplist to update it. The other components (EAR file, static content and database scripts) _have_ changed and so will be deployed again. Click the **Deploy** button to start the upgrade.
+The steplist is different this time. Deployit's _Autoflow_ engine only generates steps for components that have changed in the new package as compared to the previous deployment. Because the datasource hasn't changed, there are no steps in the steplist to update it. The other components (EAR file, static content and database scripts) _have_ changed and so will be deployed again. Deployit only includes the steps that are actually needed.
 
-When the deployment completes, click the close button to close the window.
+Click the **Deploy** button to start the upgrade and, when the deployment completes, click the **Close** button to close the window.
 
 Now, our PetPortal page shows a new and improved PetPortal application:
 
 ![PetPortal 2.0](images/petportal-2.0.png "PetPortal 2.0")
 
-# Undeploying PetPortal from TEST #
+# Scaling up with your environment #
+
+Let's take a look at one more scenario involving Deployit's powerful _Autoflow_ engine. When you start a deployment of PetPortal/1.0 to the ACC environment (either by using the Release Dashboard or by manually starting the deployment and automapping all package members), this is the deployment plan you'll see:
+
+![Deployment - PetPortal 1.0 to ACC - steplist](images/deployment-petportal-1.0-to-ACC-steplist.png "Deployment - PetPortal 1.0 to ACC - steplist")
+
+As you may remember, the ACC environment contains a redundant middleware setup in which each middleware component is doubled. Deployit takes this into account when calculating the deployment plan and executes the right steps to deploy the application to each of the middleware components present in the environment. 
+
+The takeaway point here is that Deployit takes into account the structure changes in the deployment package and environment when determining which deployment plan must be executed. This means you can rest easy knowing Deployit will always do the right thing, even as you are scaling up your applications or environments.
+
+# Undeploying your application #
 
 To completely remove the PetPortal application from the TEST environment, locate the PetPortal 2.0 deployment in the Deployed Application browser on the right-hand side of the Deployment screen:
 
@@ -162,8 +180,9 @@ We've only touched on the basics of what Deployit can do for you, so feel free t
 
 # Next steps #
 
-Here are some possibilities for experimenting further with Deployit:
+Here are some possibilities for discovering other features in Deployit:
 
 * see the differences in the deployment step list when deploying against the DEV, TEST, ACC or PROD environment.
-* use control tasks on the Apache webserver to start and stop it.
-* 
+* control your middleware via Deployit's _control tasks_. On the Repository tab, locate an _Apache_ web server in the _Dev_ directory (folder) and start or stop it via the _Tasks_ option in it's context menu. 
+* take a look at Deployit's security setup. In the _Admin_ tab, you'll find Deployit's roles and global permissions. Go to the Repository tab and access the directory (folder) security settings via the _Permissions_ option in their context menu.
+* log in as another user to see the restricted security permissions in action. For instance, log in as the _developer_ user and open the Release Dashboard.

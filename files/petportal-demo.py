@@ -152,11 +152,11 @@ save(infrastructureList)
 
 environmentsList = []
 
-environmentsList.append(create('Environments/Dev/DEV','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict-DEV'], 
+environmentsList.append(create('Environments/Dev/DEV','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict'], 
 	'members':[
 		'Infrastructure/Dev/DevServer-1/Apache', 'Infrastructure/Dev/DevServer-1/MySql', 'Infrastructure/Dev/DevServer-1/JBoss'
 		]}))
-environmentsList.append(create('Environments/Dev/TEST','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict'], 
+environmentsList.append(create('Environments/Dev/TEST','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict-TEST'], 
 	'members':[
 		'Infrastructure/Dev/Webserver-1/TestRunner', 'Infrastructure/Dev/Webserver-1/Apache','Infrastructure/Dev/Database-1/MySql', 'Infrastructure/Dev/Appserver-1/JBoss'
 	]}))
@@ -173,13 +173,12 @@ environmentsList.append(create('Environments/Ops/Prod/PROD','udm.Environment',{'
   	'Infrastructure/Ops/North/Prod/Appserver-3/JBoss','Infrastructure/Ops/South/Prod/Appserver-2/JBoss','Infrastructure/Ops/South/Prod/Appserver-4/JBoss'
    ]}))
 
-
 environmentsList.append(create('Environments/Dictionaries/PetPortal-Dict','udm.Dictionary',
   {'entries':{'APACHE_PORT':'8000','APACHE_HOST':'localhost','APPSERVER_HOST':'localhost','APPSERVER_PORT':'8080',
   'DB_URL':'jdbc:mysql:@localhost:mysql', 'PETPORTAL_TITLE':'The Pet Portal (C) Site','DB_USERNAME':'petportal','DB_PASSWORD':'petportal','PETCLINIC_CONTEXT_ROOT':'petclinic'}}))
-environmentsList.append(create('Environments/Dictionaries/PetPortal-Dict-DEV','udm.Dictionary',
+environmentsList.append(create('Environments/Dictionaries/PetPortal-Dict-TEST','udm.Dictionary',
   {'entries':{'APACHE_PORT':'80','APACHE_HOST':'localhost','APPSERVER_HOST':'localhost','APPSERVER_PORT':'80',
-  'DB_URL':'jdbc:mysql:@localhost:mysql', 'PETPORTAL_TITLE':'Pet Portal DEVELOPMENT','DB_USERNAME':'petportal','DB_PASSWORD':'petportal','PETCLINIC_CONTEXT_ROOT':'petclinic'}}))
+  'DB_URL':'jdbc:mysql:@localhost:mysql', 'PETPORTAL_TITLE':'Pet Portal on TEST','DB_USERNAME':'petportal','DB_PASSWORD':'petportal','PETCLINIC_CONTEXT_ROOT':'petclinic'}}))
 save(environmentsList)
 
 ## Additional info for Security and Pipeline demo
@@ -243,6 +242,7 @@ def satisfiesPerformanceTested(app):
 	repository.update(app)
 
 satisfiesReleaseNotes('Applications/PetPortal/1.0')	
+satisfiesPerformanceTested('Applications/PetPortal/1.0')
 satisfiesReleaseNotes('Applications/PetPortal/2.0')	
 deployAndSkipSteps('Applications/PetPortal/1.0', 'Environments/Dev/DEV')
 
