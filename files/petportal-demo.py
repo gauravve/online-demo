@@ -177,7 +177,7 @@ environmentsList.append(create('Environments/Dictionaries/PetPortal-Dict','udm.D
   {'entries':{'APACHE_PORT':'8000','APACHE_HOST':'localhost','APPSERVER_HOST':'localhost','APPSERVER_PORT':'8080',
   'DB_URL':'jdbc:mysql:@localhost:mysql', 'PETPORTAL_TITLE':'The Pet Portal (C) Site','DB_USERNAME':'petportal','DB_PASSWORD':'petportal','PETCLINIC_CONTEXT_ROOT':'petclinic'}}))
 environmentsList.append(create('Environments/Dictionaries/PetPortal-Dict-TEST','udm.Dictionary',
-  {'entries':{'APACHE_PORT':'80','APACHE_HOST':'localhost','APPSERVER_HOST':'localhost','APPSERVER_PORT':'80',
+  {'entries':{'APACHE_PORT':'8000','APACHE_HOST':'localhost','APPSERVER_HOST':'localhost','APPSERVER_PORT':'8080',
   'DB_URL':'jdbc:mysql:@localhost:mysql', 'PETPORTAL_TITLE':'Pet Portal on TEST','DB_USERNAME':'petportal','DB_PASSWORD':'petportal','PETCLINIC_CONTEXT_ROOT':'petclinic'}}))
 save(environmentsList)
 
