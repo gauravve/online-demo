@@ -158,6 +158,18 @@ As you may remember, the ACC environment contains a redundant middleware setup i
 
 The takeaway point here is that Deployit takes into account the structure changes in the deployment package and environment when determining which deployment plan must be executed. This means you can rest easy knowing Deployit will always do the right thing, even as you are scaling up your applications or environments.
 
+# Comparing deployments #
+
+A common problem is an application that works in one environment and does not work in another. Deployit provides you with the tools to troubleshoot this type of error. Using it's comparison feature, you can easily compare objects to find the differences between them.
+
+Let's give this a try. Navigate to the Repository tab and open the _Environments_ node and _Dictionaries_ directory. This is where the dictionaries with environment-specific values are stored. Open the context menu of the _PetPortal-Dict-TEST_ dictionary and select **Compare**.
+
+Deployit shows the contents of the dictionary in an editor window. To compare the contents of this dictionary with another one, simply drag the other dictionary into the comparison window. If you try that now with the _PetPortal-Dict_ dictionary, this is what you'll see:
+
+![Dictionary comparison](images/dictionary-comparison.png "Dictionary comparison")
+
+In this screenshot you see the APACHE_PORT property has a different value in the second dictionary than in the first. This is how you can easily find differences in configuration per application or environment.
+
 # Undeploying your application #
 
 To completely remove the PetPortal application from the TEST environment, locate the PetPortal 2.0 deployment in the Deployed Application browser on the right-hand side of the Deployment screen:
@@ -176,7 +188,7 @@ You can try accessing the PetPortal URL or Release Dashboard to validate the und
 
 That's the end of the Deployit online demo script. Hopefully you've gotten a feel for Deployit's capabilities and ease of use.
 
-We've only touched on the basics of what Deployit can do for you, so feel free to play around with the product in this environment. If you get stuck or are unsure what other features Deployit has, take a look at the [online documentation](http://docs.xebialabs.com).
+We've only touched on the basics of what Deployit can do for you, so feel free to play around with the product in this environment. If you get stuck or are unsure what other features Deployit has, contact us at **demo-support@xebialabs.com** or take a look at the [online documentation](http://docs.xebialabs.com).
 
 # Next steps #
 
@@ -185,4 +197,10 @@ Here are some possibilities for discovering other features in Deployit:
 * see the differences in the deployment step list when deploying against the DEV, TEST, ACC or PROD environment.
 * control your middleware via Deployit's _control tasks_. On the Repository tab, locate an _Apache_ web server in the _Dev_ directory (folder) and start or stop it via the _Tasks_ option in it's context menu. 
 * take a look at Deployit's security setup. In the _Admin_ tab, you'll find Deployit's roles and global permissions. Go to the Repository tab and access the directory (folder) security settings via the _Permissions_ option in their context menu.
-* log in as another user to see the restricted security permissions in action. For instance, log in as the _developer_ user and open the Release Dashboard.
+* log in as another user to see the restricted security permissions in action. For instance, log in as the _developer_ user and open the Release Dashboard. Other possible users are:
+	* developer / developer
+	* deployer / deployer
+	* sr-deployer / sr-deployer
+	* ops-north / ops-north
+	* ops-south / ops-south
+* change environment-specific settings in one of the available dictionaries, then redeploy the application to see the changes you made.
