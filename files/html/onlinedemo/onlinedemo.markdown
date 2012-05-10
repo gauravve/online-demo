@@ -20,13 +20,13 @@ Deployments in the sandbox are possible to each of the mentioned environments, b
 
 Let's start by logging into Deployit. Open a browser with a Flash plugin and navigate to the URL provided in the online demo email. You will be presented with a login screen:
 
-![Deployit Login](images/deployit-login.png "Deployit Login")
+![Deployit Login](images/00-deployit-login.png "Deployit Login")
 
 Enter the credentials you received into the username and password fields and click the button.
 
 You will now see the main Deployit user interface:
 
-![Deployit first screen](images/deployit-first-screen.png "Deployit first screen")
+![Deployit first screen](images/01-deployit-first-screen.png "Deployit first screen")
 
 Along the top, you'll find the main areas in the Deployit GUI:
 
@@ -44,11 +44,11 @@ Let's start by taking a look at what the demo environment looks like.
 
 Click on the **Release Dashboard** tab in the navigation bar. You'll see a release dashboard, currently empty:
 
-![Release Dashboard](images/release-dashboard.png "Release Dashboard")
+![Release Dashboard](images/02-release-dashboard.png "Release Dashboard")
 
 The release dashboard is used to get an overview of all the versions of an application and where they are deployed. The left-hand side of the screen shows an application browser with all applications in the Deployit repository. Click on the `PetPortal` application to bring it up in the release dashboard:
 
-![Release Dashboard - Deployment Pipeline](images/release-dashboard-deployment-pipeline.png "Release Dashboard - Deployment Pipeline")
+![Release Dashboard - Deployment Pipeline](images/03-release-dashboard-deployment-pipeline.png "Release Dashboard - Deployment Pipeline")
 
 This is called the _deployment pipeline_ for the `PetPortal` application. It shows all environments the application journeys through (in this case, DEV, TEST, ACC and PROD) and which versions of the application are currently deployed where.
 
@@ -56,11 +56,11 @@ You can bring up more applications by clicking on them in the application browse
 
 To zoom in on a particular application version, select it from either the application browser or click on the version number in the deployment pipeline. Try it now by clicking on the **_1.0_** version in the `PetPortal` deployment pipeline:
 
-![Release Dashboard - Application Version](images/release-dashboard-application-version.png "Release Dashboard - Application Version")
+![Release Dashboard - Application Version](images/04-release-dashboard-application-version.png "Release Dashboard - Application Version")
 
 Here, you see that `PetPortal` version `1.0` is deployed to the DEV environment. This version can also be deployed to the TEST environment (indicated by the green border and **deploy** icon). The ACC and PROD environments are currently off-limits for this version. When you click on the **_PROD_** environment you can see why this is the case:
 
-![Release Dashboard - Environment Conditions](images/release-dashboard-environment-conditions.png "Release Dashboard - Environment Conditions")
+![Release Dashboard - Environment Conditions](images/05-release-dashboard-environment-conditions.png "Release Dashboard - Environment Conditions")
 
 The PROD environment requires that the package has release notes (the `1.0` version of `PetPortal` satisfies this condition) and that it is both performance tested and has a change ticket number. Neither of the latter two conditions is currently satisfied, which is why this version can not be deployed to PROD.
 
@@ -70,7 +70,7 @@ To move our `PetPortal` 1.0 application further along it's deployment pipeline, 
 
 This brings up the deployment screen that was open when Deployit started. This time, though, it looks like this:
 
-![Deployment - PetPortal 1.0 to TEST](images/deployment-petportal-1.0-to-TEST.png "Deployment - PetPortal 1.0 to TEST")
+![Deployment - PetPortal 1.0 to TEST](images/06-deployment-petportal-1.0-to-TEST.png "Deployment - PetPortal 1.0 to TEST")
 
 The central part of this screen shows the deployment we have just started -- PetPortal/1.0 to the TEST environment. Because there is currently no version of PetPortal deployed to the environment, this is called an _initial_ deployment.
 
@@ -86,7 +86,7 @@ Before we can deploy our application, we need to tell Deployit which components 
 
 Based on the types of package members and environment members, Deployit can figure out which members should go where. Click on the Automap arrow (the double arrow in the top of the left box) to let Deployit figure this out:
 
-![Deployment - PetPortal 1.0 to TEST - mappings](images/deployment-petportal-1.0-to-TEST-mappings.png "Deployment - PetPortal 1.0 to TEST - mappings")
+![Deployment - PetPortal 1.0 to TEST - mappings](images/07-deployment-petportal-1.0-to-TEST-mappings.png "Deployment - PetPortal 1.0 to TEST - mappings")
 
 As you can see, Deployit managed to map all of our package members to members of the environment: webserver configuration and HTML to the apache host, the datasource and EAR file to the application server and the SQL files to the database. The CI `PetClinic-ds-on-wls` remains orange because it can not be mapped to any member of the environment. As it's name suggests, it is meant to be mapped to a WebLogic (wls) server. 
 
@@ -94,23 +94,23 @@ The `TestRunner` environment member is a special case. It is a container to whic
 
 With the mappings in place, we can now customize the way Deployit deploys the components to their containers. Clicking a particular deployed item (or _deployed_ for short) in the right box will bring up the balloon editor in which you can edit the deployed's values. Try clicking on the `PetPortal-host` deployed:
 
-![Deployment - PetPortal 1.0 to TEST - balloon](images/deployment-petportal-1.0-to-TEST-balloon.png "Deployment - PetPortal 1.0 to TEST - balloon")
+![Deployment - PetPortal 1.0 to TEST - balloon](images/08-deployment-petportal-1.0-to-TEST-balloon.png "Deployment - PetPortal 1.0 to TEST - balloon")
 
 The balloon shows the properties of the virtual host deployed that is mapped to the TEST-Apache webserver. This is how you can configure the deployment of the same resource to different containers.
 
 Click the **Next** button to proceed with the deployment. Deployit will use the deployment package components and target environment makeup to calculate the required steps needed to execute the deployment. The steplist is also tailored to the current state of the middleware so that only the required steps and no more are executed. The final deployment plan is shown as a list of steps:
 
-![Deployment - PetPortal 1.0 to TEST - steplist](images/deployment-petportal-1.0-to-TEST-steplist.png "Deployment - PetPortal 1.0 to TEST - steplist")
+![Deployment - PetPortal 1.0 to TEST - steplist](images/09-deployment-petportal-1.0-to-TEST-steplist.png "Deployment - PetPortal 1.0 to TEST - steplist")
 
 Before starting the deployment, you can review the steps that were generated. If you have the proper permissions, you can also skip steps and change the sequence of steps by dragging them to a different place in the list.
 
 To start the deployment, click the **Deploy** button. Deployit will execute the deployment steps one by one, showing the logs:
 
-![Deployment - PetPortal 1.0 to TEST - execution](images/deployment-petportal-1.0-to-TEST-execution.png "Deployment - PetPortal 1.0 to TEST - execution")
+![Deployment - PetPortal 1.0 to TEST - execution](images/10-deployment-petportal-1.0-to-TEST-execution.png "Deployment - PetPortal 1.0 to TEST - execution")
 
 Once the deployment has finished successfully, the screen looks like this:
 
-![Deployment - PetPortal 1.0 to TEST - completed](images/deployment-petportal-1.0-to-TEST-completed.png "Deployment - PetPortal 1.0 to TEST - completed")
+![Deployment - PetPortal 1.0 to TEST - completed](images/11-deployment-petportal-1.0-to-TEST-completed.png "Deployment - PetPortal 1.0 to TEST - completed")
 
 Click the **Close** button to close the deployment window.
 
@@ -122,7 +122,7 @@ As you can see, the title of the Pet Portal application, _Welcome to the Pet Por
 
 Now, let's check the Release Dashboard for final confirmation of the successful initial deployment to the TEST environment. This shows the following:
 
-![Release Dashboard - PetPortal 1.0 on TEST](images/release-dashboard-petportal-1.0-on-TEST.png "Release Dashboard - PetPortal 1.0 on TEST")
+![Release Dashboard - PetPortal 1.0 on TEST](images/12-release-dashboard-petportal-1.0-on-TEST.png "Release Dashboard - PetPortal 1.0 on TEST")
 
 Everything is looking good!
 
@@ -130,15 +130,15 @@ Everything is looking good!
 
 Now that PetPortal 1.0 is deployed to the TEST environment, let's see if we can upgrade it to 2.0. Bring up the Release Dashboard for this version by clicking on the **_2.0_** PetPortal version in the left-hand window:
 
-![Release Dashboard - PetPortal 2.0](images/release-dashboard-petportal-2.0.png "Release Dashboard - PetPortal 2.0")
+![Release Dashboard - PetPortal 2.0](images/13-release-dashboard-petportal-2.0.png "Release Dashboard - PetPortal 2.0")
 
 The green border around the TEST environment indicates we can deploy the 2.0 version there, too. Start the deployment by clicking on the **Deploy** icon. The deployment screen is shown again:
 
-![Deployment - PetPortal 2.0 to TEST](images/deployment-petportal-2.0-to-TEST.png "Deployment - PetPortal 2.0 to TEST")
+![Deployment - PetPortal 2.0 to TEST](images/14-deployment-petportal-2.0-to-TEST.png "Deployment - PetPortal 2.0 to TEST")
 
 This time, the screen shows an _upgrade_ deployment, a change to a deployment that is already present on the environment. Note that the mappings we made during our previous deployment are all reused here so we don't have to configure anything. If the new version of PetPortal contained additional components or some components had been removed, we would have had to update the mappings on this screen. Because this is not the case, we can continue straight on to the steplist by clicking on the **Next** button:
 
-![Deployment - PetPortal 2.0 to TEST - steplist](images/deployment-petportal-2.0-to-TEST-steplist.png "Deployment - PetPortal 2.0 to TEST - steplist")
+![Deployment - PetPortal 2.0 to TEST - steplist](images/15-deployment-petportal-2.0-to-TEST-steplist.png "Deployment - PetPortal 2.0 to TEST - steplist")
 
 The steplist is different this time. Deployit's _Autoflow_ engine only generates steps for components that have changed in the new package as compared to the previous deployment. Because the datasource hasn't changed, there are no steps in the steplist to update it. The other components (EAR file, static content and database scripts) _have_ changed and so will be deployed again. Deployit only includes the steps that are actually needed.
 
@@ -152,7 +152,7 @@ Now, our PetPortal page shows a new and improved PetPortal application:
 
 Let's take a look at one more scenario involving Deployit's powerful _Autoflow_ engine. When you start a deployment of PetPortal/1.0 to the ACC environment (either by using the Release Dashboard or by manually starting the deployment and automapping all package members), this is the deployment plan you'll see:
 
-![Deployment - PetPortal 1.0 to ACC - steplist](images/deployment-petportal-1.0-to-ACC-steplist.png "Deployment - PetPortal 1.0 to ACC - steplist")
+![Deployment - PetPortal 1.0 to ACC - steplist](images/16-deployment-petportal-1.0-to-ACC-steplist.png "Deployment - PetPortal 1.0 to ACC - steplist")
 
 As you may remember, the ACC environment contains a redundant middleware setup in which each middleware component is doubled. Deployit takes this into account when calculating the deployment plan and executes the right steps to deploy the application to each of the middleware components present in the environment. 
 
@@ -166,7 +166,7 @@ Let's give this a try. Navigate to the Repository tab and open the _Environments
 
 Deployit shows the contents of the dictionary in an editor window. To compare the contents of this dictionary with another one, simply drag the other dictionary into the comparison window. If you try that now with the _PetPortal-Dict_ dictionary, this is what you'll see:
 
-![Dictionary comparison](images/dictionary-comparison.png "Dictionary comparison")
+![Dictionary comparison](images/17-dictionary-comparison.png "Dictionary comparison")
 
 In this screenshot you see the APACHE_PORT property has a different value in the second dictionary than in the first. This is how you can easily find differences in configuration per application or environment.
 
@@ -174,11 +174,15 @@ In this screenshot you see the APACHE_PORT property has a different value in the
 
 To completely remove the PetPortal application from the TEST environment, locate the PetPortal 2.0 deployment in the Deployed Application browser on the right-hand side of the Deployment screen:
 
-![Undeployment - PetPortal 2.0 on TEST](images/undeployment-petportal-2.0-on-TEST.png "Undeployment - PetPortal 2.0 on TEST")
+![Undeployment - PetPortal 2.0 on TEST](images/18-undeployment-petportal-2.0-on-TEST.png "Undeployment - PetPortal 2.0 on TEST")
 
-Bring up the context menu of this item by right-clicking on the item. Select the **Undeploy** option from the context menu. Deployit will generate a steplist that is needed to undeploy all application components from the infrastructure:
+Bring up the context menu of this item by right-clicking on the item. Select the **Undeploy** option from the context menu. Deployit will show you a popup allowing you to specify how to perform the undeployment:
 
-![Undeployment - PetPortal 2.0 on TEST - steplist](images/undeployment-petportal-2.0-on-TEST-steplist.png "Undeployment - PetPortal 2.0 on TEST - steplist")
+![Undeployment - PetPortal 2.0 on TEST - popup](images/19-undeployment-petportal-2.0-on-TEST-popup.png "Undeployment - PetPortal 2.0 on TEST - popup")
+
+If you press the **Next** button, Deployit will generate a steplist that is needed to undeploy all application components from the infrastructure:
+
+![Undeployment - PetPortal 2.0 on TEST - steplist](images/20-undeployment-petportal-2.0-on-TEST-steplist.png "Undeployment - PetPortal 2.0 on TEST - steplist")
 
 Click the **Undeploy** button to undeploy the application, then **close** to close the undeployment window itself.
 
