@@ -58,7 +58,7 @@ To zoom in on a particular application version, select it from either the applic
 
 ![Release Dashboard - Application Version](images/04-release-dashboard-application-version.png "Release Dashboard - Application Version")
 
-Here, you see that `PetPortal` version `1.0` is deployed to the DEV environment. This version can also be deployed to the TEST environment (indicated by the green border and **deploy** icon). The ACC and PROD environments are currently off-limits for this version. When you click on the **_PROD_** environment you can see why this is the case:
+Here, you see that `PetPortal` version `1.0` is deployed to the DEV environment. This version can also be deployed to the TEST environment (indicated by the green border and **deploy** icon). The PROD environment is currently off-limits for this version. When you click on the **_PROD_** environment you can see why this is the case:
 
 ![Release Dashboard - Environment Conditions](images/05-release-dashboard-environment-conditions.png "Release Dashboard - Environment Conditions")
 
