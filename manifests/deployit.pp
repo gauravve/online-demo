@@ -7,11 +7,11 @@ $JBOSSAS_PLUGIN_VERSION = '3.7.0'
 $WLS_PLUGIN_VERSION = '3.7.0'
 $TESTER_PLUGIN_VERSION = '1.0-milestone-7'
 
-$DEPLOYIT_SERVER_ARCHIVE = "/download-cache/Deployit/deployit-${DEPLOYIT_VERSION}-server.zip"
-$DEPLOYIT_CLI_ARCHIVE = "/download-cache/Deployit/deployit-${DEPLOYIT_VERSION}-cli.zip"
-$JBOSSAS_PLUGIN_ARCHIVE = "/download-cache/Deployit/jbossas-plugin-${JBOSSAS_PLUGIN_VERSION}.jar"
-$WLS_PLUGIN_ARCHIVE = "/download-cache/Deployit/wls-plugin-${WLS_PLUGIN_VERSION}.jar"
-$TESTER_PLUGIN_ARCHIVE = "/download-cache/Deployit/deployment-test2-plugin-${TESTER_PLUGIN_VERSION}.jar"
+$DEPLOYIT_SERVER_ARCHIVE = "/download-cache/deployit-${DEPLOYIT_VERSION}-server.zip"
+$DEPLOYIT_CLI_ARCHIVE = "/download-cache/deployit-${DEPLOYIT_VERSION}-cli.zip"
+$JBOSSAS_PLUGIN_ARCHIVE = "/download-cache/jbossas-plugin-${JBOSSAS_PLUGIN_VERSION}.jar"
+$WLS_PLUGIN_ARCHIVE = "/download-cache/wls-plugin-${WLS_PLUGIN_VERSION}.jar"
+$TESTER_PLUGIN_ARCHIVE = "/download-cache/deployment-test2-plugin-${TESTER_PLUGIN_VERSION}.jar"
 
 # The following allows this Puppet file to be run on vagrant for local testing & EC2 in production
 $CLI_HOME = $operatingsystem ? {
