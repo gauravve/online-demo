@@ -2,7 +2,7 @@
 
 # Ensure Deployit is downloaded & installed
 
-$DEPLOYIT_VERSION = '3.7.2-SNAPSHOT'
+$DEPLOYIT_VERSION = '3.7.2'
 $JBOSSAS_PLUGIN_VERSION = '3.7.0'
 $WLS_PLUGIN_VERSION = '3.7.0'
 $TESTER_PLUGIN_VERSION = '1.0-milestone-7'
