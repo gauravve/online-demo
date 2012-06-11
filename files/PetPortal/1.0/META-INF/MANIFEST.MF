@@ -17,7 +17,7 @@ CI-password: {{DB_PASSWORD}}
 
 Name: PetPortal_pages
 CI-Type: www.WebContent
-CI-Name: webContent
+CI-Name: PetPortal-webContent
 CI-Folder: PetPortal
 
 Name: PetPortal-host
