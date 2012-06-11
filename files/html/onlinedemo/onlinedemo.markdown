@@ -88,7 +88,7 @@ Based on the types of package members and environment members, Deployit can figu
 
 ![Deployment - PetPortal 1.0 to TEST - mappings](images/07-deployment-petportal-1.0-to-TEST-mappings.png "Deployment - PetPortal 1.0 to TEST - mappings")
 
-As you can see, Deployit managed to map all of our package members to members of the environment: webserver configuration and HTML to the apache host, the datasource and EAR file to the application server and the SQL files to the database. The CI `PetClinic-ds-on-wls` remains orange because it can not be mapped to any member of the environment. As it's name suggests, it is meant to be mapped to a WebLogic (wls) server. 
+As you can see, Deployit managed to map all of our package members to members of the environment: webserver configuration and HTML to the apache host, the datasource and EAR file to the application server and the SQL files to the database.
 
 The `TestRunner` environment member is a special case. It is a container to which _tests_ can be deployed that verify whether the deployment succeeded by accessing the deployed application. In this scenario, there are two tests in the package: one that test whether the PetPortal homepage can be reached and another that tests whether the webserver configuration that forwards requests to the PetClinic application is functioning correctly. You'll see the tests come by when we execute the deployment.
 
