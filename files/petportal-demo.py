@@ -152,7 +152,7 @@ save(infrastructureList)
 
 environmentsList = []
 
-environmentsList.append(create('Environments/Dev/DEV','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict'], 
+environmentsList.append(create('Environments/Dev/DEV','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict-DEV'], 
 	'members':[
 		'Infrastructure/Dev/DevServer-1/Apache', 'Infrastructure/Dev/DevServer-1/MySql', 'Infrastructure/Dev/DevServer-1/JBoss'
 		]}))
@@ -160,12 +160,12 @@ environmentsList.append(create('Environments/Dev/TEST','udm.Environment',{'dicti
 	'members':[
 		'Infrastructure/Dev/Webserver-1/TestRunner', 'Infrastructure/Dev/Webserver-1/Apache','Infrastructure/Dev/Database-1/MySql', 'Infrastructure/Dev/Appserver-1/JBoss'
 	]}))
-environmentsList.append(create('Environments/Ops/Acc/ACC','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict'], 
+environmentsList.append(create('Environments/Ops/Acc/ACC','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict-ACC'], 
 	'members':[
 		'Infrastructure/Ops/South/Acc/Database-2/MySql','Infrastructure/Ops/North/Acc/Database-1/MySql','Infrastructure/Ops/South/Acc/Webserver-2/Apache',
 		'Infrastructure/Ops/North/Acc/Webserver-1/Apache','Infrastructure/Ops/South/Acc/Appserver-2/JBoss','Infrastructure/Ops/North/Acc/Appserver-1/JBoss'
 	]}))
-environmentsList.append(create('Environments/Ops/Prod/PROD','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict'],
+environmentsList.append(create('Environments/Ops/Prod/PROD','udm.Environment',{'dictionaries': ['Environments/Dictionaries/PetPortal-Dict-PROD'],
   'members':[
   	'Infrastructure/Ops/South/Prod/Database-2/MySql','Infrastructure/Ops/North/Prod/Database-1/MySql','Infrastructure/Ops/South/Prod/Webserver-2/Apache',
   	'Infrastructure/Ops/North/Prod/Webserver-1/Apache','Infrastructure/Ops/South/Prod/Database-4/MySql','Infrastructure/Ops/North/Prod/Database-3/MySql',
@@ -173,12 +173,19 @@ environmentsList.append(create('Environments/Ops/Prod/PROD','udm.Environment',{'
   	'Infrastructure/Ops/North/Prod/Appserver-3/JBoss','Infrastructure/Ops/South/Prod/Appserver-2/JBoss','Infrastructure/Ops/South/Prod/Appserver-4/JBoss'
    ]}))
 
-environmentsList.append(create('Environments/Dictionaries/PetPortal-Dict','udm.Dictionary',
+environmentsList.append(create('Environments/Dictionaries/PetPortal-Dict-DEV','udm.Dictionary',
   {'entries':{'APACHE_PORT':'800','APACHE_HOST':'localhost','APPSERVER_HOST':'localhost','APPSERVER_PORT':'8080',
   'DB_URL':'jdbc:mysql:@localhost:mysql', 'PETPORTAL_TITLE':'The Pet Portal (C) Site','DB_USERNAME':'petportal','DB_PASSWORD':'petportal','PETCLINIC_CONTEXT_ROOT':'petclinic'}}))
 environmentsList.append(create('Environments/Dictionaries/PetPortal-Dict-TEST','udm.Dictionary',
   {'entries':{'APACHE_PORT':'8000','APACHE_HOST':'localhost','APPSERVER_HOST':'localhost','APPSERVER_PORT':'8080',
   'DB_URL':'jdbc:mysql:@localhost:mysql', 'PETPORTAL_TITLE':'Pet Portal on TEST','DB_USERNAME':'petportal','DB_PASSWORD':'petportal','PETCLINIC_CONTEXT_ROOT':'petclinic'}}))
+environmentsList.append(create('Environments/Dictionaries/PetPortal-Dict-ACC','udm.Dictionary',
+  {'entries':{'APACHE_PORT':'900','APACHE_HOST':'localhost','APPSERVER_HOST':'localhost','APPSERVER_PORT':'8080',
+  'DB_URL':'jdbc:mysql:@localhost:mysql', 'PETPORTAL_TITLE':'Pet Portal on ACC','DB_USERNAME':'petportal','DB_PASSWORD':'petportal','PETCLINIC_CONTEXT_ROOT':'petclinic'}}))
+environmentsList.append(create('Environments/Dictionaries/PetPortal-Dict-PROD','udm.Dictionary',
+  {'entries':{'APACHE_PORT':'9000','APACHE_HOST':'localhost','APPSERVER_HOST':'localhost','APPSERVER_PORT':'8080',
+  'DB_URL':'jdbc:mysql:@localhost:mysql', 'PETPORTAL_TITLE':'Pet Portal on PROD','DB_USERNAME':'petportal','DB_PASSWORD':'petportal','PETCLINIC_CONTEXT_ROOT':'petclinic'}}))
+
 save(environmentsList)
 
 ## Additional info for Security and Pipeline demo
