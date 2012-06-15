@@ -164,7 +164,7 @@ A common problem is an application that works in one environment and does not wo
 
 Let's give this a try. Navigate to the Repository tab and open the _Environments_ node and _Dictionaries_ directory. This is where the dictionaries with environment-specific values are stored. Open the context menu of the _PetPortal-Dict-TEST_ dictionary and select **Compare**.
 
-Deployit shows the contents of the dictionary in an editor window. To compare the contents of this dictionary with another one, simply drag the other dictionary into the comparison window. If you try that now with the _PetPortal-Dict_ dictionary, this is what you'll see:
+Deployit shows the contents of the dictionary in an editor window. To compare the contents of this dictionary with another one, simply drag the other dictionary into the comparison window. If you try that now with the _PetPortal-Dict-DEV_ dictionary, this is what you'll see:
 
 ![Dictionary comparison](images/17-dictionary-comparison.png "Dictionary comparison")
 
