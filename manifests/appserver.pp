@@ -8,6 +8,6 @@
 
 exec { "extract-jboss-server":
 	cwd => "/opt",
-	command => "/usr/bin/unzip -o /download-cache/JBoss/jboss-5.1.0.GA.zip -d /opt",
+	command => "/usr/bin/unzip -o /download-cache/jboss-5.1.0.GA.zip -d /opt",
 	creates => "/opt/jboss-5.1.0.GA",
 }

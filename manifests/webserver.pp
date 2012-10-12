@@ -8,6 +8,7 @@ class httpd {
 
   service { 'apache2':
     ensure => running,
+    require => Package["apache2"],
   }
 }
 include httpd
