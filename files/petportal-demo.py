@@ -1,4 +1,3 @@
-from com.xebialabs.deployit.core.api.dto import ConfigurationItemDtos
 
 ########
 # Global constants for the test data: 
@@ -20,7 +19,7 @@ def verifyNoValidationErrors(entity):
        raise Exception("Validations are present! Id=%s, Error:\n " % (entity.id, entity.validations.toString()))
 
 def verifyNoValidationErrorsInRepoObjectsEntity(repositoryObjects):
-   for repoObject in repositoryObjects.objects:
+   for repoObject in repositoryObjects:
        verifyNoValidationErrors(repoObject)
 
 def saveRepositoryObjectsEntity(repoObjects):
@@ -31,9 +30,7 @@ def saveRepositoryObjectsEntity(repoObjects):
 	return repositoryObjects
 
 def save(listOfCis):
-	ros=ConfigurationItemDtos()
-	ros.objects=listOfCis
-	return saveRepositoryObjectsEntity(ros)
+	return saveRepositoryObjectsEntity(listOfCis)
 
 def resolveInfraId(id):
 	id = id if id.startswith("Infrastructure/") else "Infrastructure/%s" % id
@@ -208,16 +205,17 @@ compPkg.packages = ['Applications/PetPortal/2.0', 'Applications/PetClinic-war/2.
 repository.update(compPkg)
 
 # Release overview: define deployment pipeline
+pipeline = repository.create(factory.configurationItem('Configuration/Pipeline', 'release.DeploymentPipeline',{"pipeline":[ 'Environments/Dev/DEV','Environments/Dev/TEST','Environments/Ops/Acc/ACC','Environments/Ops/Prod/PROD' ]}))
 app = repository.read('Applications/PetPortal')
-app.deploymentPipeline = [ 'Environments/Dev/DEV','Environments/Dev/TEST','Environments/Ops/Acc/ACC','Environments/Ops/Prod/PROD' ]
+app.pipeline = pipeline.id
 repository.update(app)
 
 app = repository.read('Applications/PetClinic-war')
-app.deploymentPipeline = [ 'Environments/Dev/DEV','Environments/Dev/TEST','Environments/Ops/Acc/ACC','Environments/Ops/Prod/PROD' ]
+app.pipeline = pipeline.id
 repository.update(app)
 
 app = repository.read('Applications/PetClinic-ear')
-app.deploymentPipeline = [ 'Environments/Dev/DEV','Environments/Dev/TEST','Environments/Ops/Acc/ACC','Environments/Ops/Prod/PROD' ]
+app.pipeline = pipeline.id
 repository.update(app)
 
 # Release overview: define environment conditions

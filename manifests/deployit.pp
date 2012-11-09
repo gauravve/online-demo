@@ -2,10 +2,10 @@
 
 # Ensure Deployit is downloaded & installed
 
-$DEPLOYIT_VERSION = '3.7.3'
-$JBOSSAS_PLUGIN_VERSION = '3.7.0'
-$WLS_PLUGIN_VERSION = '3.7.0'
-$TESTER_PLUGIN_VERSION = '1.0-milestone-7'
+$DEPLOYIT_VERSION = '3.8.0'
+$JBOSSAS_PLUGIN_VERSION = '3.8.0'
+$WLS_PLUGIN_VERSION = '3.8.0'
+$TESTER_PLUGIN_VERSION = '3.7.0-1'
 
 $DEPLOYIT_SERVER_ARCHIVE = "/download-cache/deployit-${DEPLOYIT_VERSION}-server.zip"
 $DEPLOYIT_CLI_ARCHIVE = "/download-cache/deployit-${DEPLOYIT_VERSION}-cli.zip"

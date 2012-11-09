@@ -3,7 +3,7 @@
 
 	<!-- Add Apache ProxyPass extension -->
 	<type type="www.ApacheProxyPassSetting" extends="www.ApacheConfFragment" deployable-type="www.ApacheProxyPassSpec">
-		<generate-deployable type="www.ApacheProxyPassSpec" extends="generic.Resource" />
+		<generate-deployable type="www.ApacheProxyPassSpec" extends="www.ApacheConfFragmentSpec" />
 
 		<property name="from" />
 		<property name="to" />
