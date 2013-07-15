@@ -222,12 +222,12 @@ class file_rc_local {
   }
 }
 
-include file_rc_local
-include enable_proxy_pass
-include package_libapache2-mod-proxy-html
-include package_unzip
-include package_java
-include package_curl
+#include file_rc_local
+#include enable_proxy_pass
+#include package_libapache2-mod-proxy-html
+#include package_unzip
+#include package_java
+#include package_curl
 include deployit-install
 include deployit-start
 include deployit-data
