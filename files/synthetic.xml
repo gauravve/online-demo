@@ -2,14 +2,14 @@
 <synthetic xmlns="http://www.xebialabs.com/deployit/synthetic">
 
 	<!-- Add Apache ProxyPass extension -->
-	<type type="www.ApacheProxyPassSetting" extends="www.ApacheConfFragment" deployable-type="www.ApacheProxyPassSpec">
+	<!-- <type type="www.ApacheProxyPassSetting" extends="www.ApacheConfFragment" deployable-type="www.ApacheProxyPassSpec">
 		<generate-deployable type="www.ApacheProxyPassSpec" extends="www.ApacheConfFragmentSpec" />
 
 		<property name="from" />
 		<property name="to" />
 		<property name="options" required="false" default="" />
 		<property name="reverse" kind="boolean" required="false" default="false" />
-	</type>
+	</type> -->
 	
 	<!-- Set default start/stop wait times -->
 	<type-modification type="jbossas.ServerV5">
@@ -45,7 +45,7 @@
         <property name="stopScript" default="demo/apache/stop" hidden="true" description="The command to stop Apache. Arguments containing spaces are not supported"/>
     </type>
 
-    <type type="demo.JBoss" extends="jbossas.ServerV5" description="Demo JBoss server">
+    <type type="demo.JBoss" extends="jbossas.ServerV5" description="Demo JBoss server" inspectable="true">
         <property name="home" default="/tmp" hidden="true"/>
 		<property name="startWaitTime" kind="integer" default="5" hidden="true"/>
 		<property name="stopWaitTime" kind="integer" default="5" hidden="true"/>

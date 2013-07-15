@@ -2,10 +2,10 @@
 
 # Ensure Deployit is downloaded & installed
 
-$DEPLOYIT_VERSION = '3.8.0'
-$JBOSSAS_PLUGIN_VERSION = '3.8.0'
-$WLS_PLUGIN_VERSION = '3.8.0'
-$TESTER_PLUGIN_VERSION = '3.7.0-1'
+$DEPLOYIT_VERSION = '3.9.2'
+$JBOSSAS_PLUGIN_VERSION = '3.8.1'
+$WLS_PLUGIN_VERSION = '3.9.0'
+$TESTER_PLUGIN_VERSION = '3.8.0'
 
 $DEPLOYIT_SERVER_ARCHIVE = "/download-cache/deployit-${DEPLOYIT_VERSION}-server.zip"
 $DEPLOYIT_CLI_ARCHIVE = "/download-cache/deployit-${DEPLOYIT_VERSION}-cli.zip"
@@ -35,6 +35,8 @@ class deployit-install {
   exec { 'download-deployit-server':
     unless => "test ! -e /usr/bin/s3get || test -e ${DEPLOYIT_SERVER_ARCHIVE}",
     command => "s3get deployit-online-demo/deployit-${DEPLOYIT_VERSION}-server.zip ${DEPLOYIT_SERVER_ARCHIVE}",
+    #require => [Package['unzip'],Package['openjdk-6-jdk']]
+    #require => Package['unzip'],
   }
 
   deployit::server { 'install-server':
@@ -166,6 +168,7 @@ class online-demo-docs {
   # Install online demo docs
 
   file { ['/var', '/var/www']:
+    require => [Package['unzip'],Package['openjdk-6-jdk'],Package['curl']],
     ensure => directory,
   }
 
@@ -184,6 +187,47 @@ class online-demo-docs {
   }
 }
 
+class package_unzip {
+        package { "unzip": ensure => "installed" }
+}
+
+class package_java {
+	package { "openjdk-6-jdk": ensure => "installed" }
+}
+
+class package_curl {
+	package { "curl": ensure => "installed" }
+}
+
+class package_libapache2-mod-proxy-html {
+	package { "libapache2-mod-proxy-html": ensure => "installed" }
+}
+
+class enable_proxy_pass {
+	exec { 'enable-proxy-pass-mod':
+        cwd => '/etc/apache2/mods-enabled',
+	command => '/bin/ln -s ../mods-available/proxy_http.load .;/bin/ln -s ../mods-available/proxy.load .;/bin/ln -s ../mods-available/headers.load .',
+	require => Package['libapache2-mod-proxy-html'],
+    }
+}
+
+class file_rc_local {
+    file { '/etc/rc.local':
+       content =>
+       "/usr/bin/nohup /opt/jboss-5.1.0.GA/bin/run.sh -b 0.0.0.0 &
+	/usr/bin/nohup /opt/deployit-server/bin/server.sh &
+       exit 0",
+    ensure => present,
+    mode => 755,
+  }
+}
+
+include file_rc_local
+include enable_proxy_pass
+include package_libapache2-mod-proxy-html
+include package_unzip
+include package_java
+include package_curl
 include deployit-install
 include deployit-start
 include deployit-data

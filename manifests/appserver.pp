@@ -7,6 +7,7 @@
 #}
 
 exec { "extract-jboss-server":
+        require => [Package['unzip'],Package['openjdk-6-jdk']],
 	cwd => "/opt",
 	command => "/usr/bin/unzip -o /download-cache/jboss-5.1.0.GA.zip -d /opt",
 	creates => "/opt/jboss-5.1.0.GA",
