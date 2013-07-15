@@ -1,6 +1,6 @@
 # Introduction #
 
-This project sets up the Deployit online demo. It is meant to be run from a newly provisioned Amazon EC2 image.
+This project sets up the Deployit 3.9 online demo. It is meant to be run from a newly provisioned Amazon EC2 image.
 
 # Preparation of the AMI #
 
