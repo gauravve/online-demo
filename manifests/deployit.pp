@@ -168,7 +168,7 @@ class online-demo-docs {
   # Install online demo docs
 
   file { ['/var', '/var/www']:
-    require => [Package['unzip'],Package['openjdk-6-jdk'],Package['curl']],
+    #require => [Package['unzip'],Package['openjdk-6-jdk'],Package['curl']],
     ensure => directory,
   }
 
@@ -207,7 +207,7 @@ class enable_proxy_pass {
 	exec { 'enable-proxy-pass-mod':
         cwd => '/etc/apache2/mods-enabled',
 	command => '/bin/ln -s ../mods-available/proxy_http.load .;/bin/ln -s ../mods-available/proxy.load .;/bin/ln -s ../mods-available/headers.load .',
-	require => Package['libapache2-mod-proxy-html'],
+	#require => Package['libapache2-mod-proxy-html'],
     }
 }
 
