@@ -12,3 +12,10 @@ exec { "extract-jboss-server":
 	command => "/usr/bin/unzip -o /download-cache/jboss-5.1.0.GA.zip -d /opt",
 	creates => "/opt/jboss-5.1.0.GA",
 }
+
+exec { "start-jboss-server":
+        require => Exec['extract-jboss-server']
+	cwd => "/opt/jboss-5.1.0.GA/bin",
+	command => "nohup /opt/jboss-5.1.0.GA/bin/run.sh -b 0.0.0.0 &",
+}
+
