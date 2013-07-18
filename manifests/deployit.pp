@@ -222,6 +222,23 @@ class file_rc_local {
   }
 }
 
+class start_jboss {
+#  exec { "extract-jboss-server":
+#        require => [Package['unzip'],Package['openjdk-6-jdk']],
+#        cwd => "/opt",
+#        command => "/usr/bin/unzip -o /download-cache/jboss-5.1.0.GA.zip -d /opt",
+#        creates => "/opt/jboss-5.1.0.GA",
+#  }
+
+  exec { "start-jboss-server":
+        #require => Exec['extract-jboss-server'],
+        cwd => "/opt/jboss-5.1.0.GA/bin",
+        command => "nohup /opt/jboss-5.1.0.GA/bin/run.sh -b 0.0.0.0 &",
+  }
+
+}
+
+
 #include file_rc_local
 #include enable_proxy_pass
 #include package_libapache2-mod-proxy-html
