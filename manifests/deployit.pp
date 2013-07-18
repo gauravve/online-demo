@@ -239,7 +239,7 @@ class start_jboss {
 }
 
 
-#include file_rc_local
+include file_rc_local
 #include enable_proxy_pass
 #include package_libapache2-mod-proxy-html
 #include package_unzip
