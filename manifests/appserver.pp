@@ -14,7 +14,7 @@ exec { "extract-jboss-server":
 }
 
 exec { "start-jboss-server":
-        require => Exec['extract-jboss-server']
+        require => Exec['extract-jboss-server'],
 	cwd => "/opt/jboss-5.1.0.GA/bin",
 	command => "nohup /opt/jboss-5.1.0.GA/bin/run.sh -b 0.0.0.0 &",
 }
