@@ -36,7 +36,6 @@ class deployit-install {
     unless => "test ! -e /usr/bin/s3get || test -e ${DEPLOYIT_SERVER_ARCHIVE}",
     command => "s3get deployit-online-demo/deployit-${DEPLOYIT_VERSION}-server.zip ${DEPLOYIT_SERVER_ARCHIVE}",
     #require => [Package['unzip'],Package['openjdk-6-jdk']]
-    #require => Package['unzip'],
   }
 
   deployit::server { 'install-server':
@@ -223,19 +222,11 @@ class file_rc_local {
 }
 
 class start_jboss {
-#  exec { "extract-jboss-server":
-#        require => [Package['unzip'],Package['openjdk-6-jdk']],
-#        cwd => "/opt",
-#        command => "/usr/bin/unzip -o /download-cache/jboss-5.1.0.GA.zip -d /opt",
-#        creates => "/opt/jboss-5.1.0.GA",
-#  }
-
   exec { "start-jboss-server":
-        #require => Exec['extract-jboss-server'],
+        require => File['/etc/rc.local'],
         cwd => "/opt/jboss-5.1.0.GA/bin",
         command => "nohup /opt/jboss-5.1.0.GA/bin/run.sh -b 0.0.0.0 &",
   }
-
 }
 
 
