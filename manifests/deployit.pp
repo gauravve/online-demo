@@ -245,6 +245,7 @@ class start_jboss {
 #include package_unzip
 #include package_java
 #include package_curl
+include start_jboss
 include deployit-install
 include deployit-start
 include deployit-data
