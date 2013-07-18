@@ -211,7 +211,7 @@ class enable_proxy_pass {
 }
 
 class file_rc_local {
-    file { '/etc/rc.local':
+    file { '/etc/rc.d/rc.local':
        content =>
        "/usr/bin/nohup /opt/jboss-5.1.0.GA/bin/run.sh -b 0.0.0.0 &
 	/usr/bin/nohup /opt/deployit-server/bin/server.sh &
@@ -223,7 +223,7 @@ class file_rc_local {
 
 class start_jboss {
   exec { "start-jboss-server":
-        require => File['/etc/rc.local'],
+        require => File['/etc/rc.d/rc.local'],
         cwd => "/opt/jboss-5.1.0.GA/bin",
         command => "nohup /opt/jboss-5.1.0.GA/bin/run.sh -b 0.0.0.0 &",
   }
